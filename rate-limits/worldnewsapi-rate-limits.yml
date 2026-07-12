@@ -1,0 +1,76 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: World News API
+providerId: worldnewsapi
+created: '2026-07-11'
+modified: '2026-07-11'
+reconciled: false
+tags:
+- News
+- News Search
+- Rate Limiting
+- Quotas
+- Points
+description: >-
+  World News API enforces two overlapping controls - a daily point (credit)
+  allowance and per-request rate limits (requests per second and maximum
+  concurrent requests). Every endpoint consumes a number of points that count
+  against the plan's daily allowance; exceeding the allowance blocks calls on the
+  Free plan or bills per additional point on paid plans. Rate and concurrency
+  limits scale up with plan tier - Free is 1 request/sec and 1 concurrent
+  request; Reporter 2/sec and 5 concurrent; Journalist 10/sec and 10 concurrent;
+  Editor 20/sec and 20 concurrent.
+notes: >-
+  Values captured from the public pricing page on 2026-07-11 and not
+  independently reconciled - verify at https://worldnewsapi.com/pricing/.
+  Per-endpoint point costs vary by endpoint and parameters. Remaining quota and
+  rate-limit state are typically returned in X-API-Quota-* response headers.
+sources:
+- https://worldnewsapi.com/pricing/
+- https://worldnewsapi.com/docs/
+responseCodes:
+  quotaExceeded: 402
+  throttled: 429
+  unauthorized: 401
+limits:
+- name: Daily Points (Free)
+  scope: account
+  metric: points
+  limit: 50 per day
+  notes: After 50 points, no further calls are allowed until the next day.
+- name: Daily Points (Reporter)
+  scope: account
+  metric: points
+  limit: 500 per day included, then $0.003 per additional point
+  notes: Paid overage past the included daily allowance.
+- name: Daily Points (Journalist)
+  scope: account
+  metric: points
+  limit: 5000 per day included, then $0.0025 per additional point
+  notes: Paid overage past the included daily allowance.
+- name: Daily Points (Editor)
+  scope: account
+  metric: points
+  limit: 50000 per day included, then $0.002 per additional point
+  notes: Paid overage past the included daily allowance.
+- name: Requests per Second
+  scope: account
+  metric: requests
+  limit: 1 (Free) / 2 (Reporter) / 10 (Journalist) / 20 (Editor)
+  notes: Per-second request cap scales with plan tier.
+- name: Concurrent Requests
+  scope: account
+  metric: connections
+  limit: 1 (Free) / 5 (Reporter) / 10 (Journalist) / 20 (Editor)
+  notes: Maximum number of in-flight requests at once, scales with plan tier.
+policies:
+- name: Point Metering
+  description: Each endpoint call consumes a plan-independent number of points based on the endpoint and parameters; points are the primary quota.
+- name: Backoff Strategy
+  description: Honor 429 (rate limited) and 402 (quota exceeded) responses with exponential backoff and by staying within the plan's per-second and concurrency limits.
+- name: Quota Headers
+  description: Inspect X-API-Quota-Request, X-API-Quota-Used, and X-API-Quota-Left response headers to track remaining daily points.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

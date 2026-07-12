@@ -1,0 +1,154 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: World News API
+providerId: worldnewsapi
+created: '2026-07-11'
+modified: '2026-07-11'
+reconciled: false
+tags:
+- News
+- News Search
+- Local News
+- Media Monitoring
+- Plans
+description: >-
+  World News API is sold as point-metered monthly subscriptions. Every endpoint
+  call consumes a number of points (also called credits) that count against a
+  daily point allowance; once the daily allowance is used up, calls are either
+  blocked (Free) or billed per additional point (paid plans). Plans also differ
+  in requests-per-second, concurrent-request limits, historical-data depth, and
+  support level. A free tier is available for evaluation (with a required
+  backlink to worldnewsapi.com); paid tiers remove the backlink requirement and
+  add uptime guarantees and support.
+notes: >-
+  Prices and allowances captured from the public pricing page on 2026-07-11 and
+  not independently reconciled - verify current numbers at
+  https://worldnewsapi.com/pricing/. Per-endpoint point costs vary by endpoint
+  and parameters and are not fully published; treat the point allowances as the
+  primary quota.
+sources:
+- https://worldnewsapi.com/pricing/
+- https://worldnewsapi.com/docs/
+plans:
+- id: worldnewsapi-free
+  name: Free
+  type: free
+  description: >-
+    Free tier for evaluation and low-volume use. 50 points per day, then no
+    further calls until the next day. Limited to 1 month of historical data and
+    requires a backlink to worldnewsapi.com.
+  entries:
+  - label: Daily Points
+    name: free_daily_points
+    type: usage
+    metric: points
+    limit: 50
+    timeFrame: day
+    geo: global
+    unit: 1
+    price: $0
+    userMultiplied: false
+  elements:
+  - name: 1 Request per Second
+  - name: 1 Concurrent Request
+  - name: 1 Month History
+  - name: Backlink Required
+- id: worldnewsapi-reporter
+  name: Reporter
+  type: paid
+  description: >-
+    Entry paid plan. 500 points per day included, then $0.003 per additional
+    point. Unlimited history, no backlink requirement.
+  entries:
+  - label: Monthly Subscription
+    name: reporter_subscription
+    type: flat
+    metric: subscription
+    limit: 1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $39/month
+    userMultiplied: false
+  - label: Included Daily Points
+    name: reporter_daily_points
+    type: usage
+    metric: points
+    limit: 500
+    timeFrame: day
+    geo: global
+    unit: 1
+    price: included; then $0.003 per additional point
+    userMultiplied: false
+  elements:
+  - name: 2 Requests per Second
+  - name: 5 Concurrent Requests
+  - name: Unlimited History
+  - name: No Backlink Required
+- id: worldnewsapi-journalist
+  name: Journalist
+  type: paid
+  description: >-
+    Mid-tier plan. 5,000 points per day included, then $0.0025 per additional
+    point, with higher rate and concurrency limits.
+  entries:
+  - label: Monthly Subscription
+    name: journalist_subscription
+    type: flat
+    metric: subscription
+    limit: 1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $379/month
+    userMultiplied: false
+  - label: Included Daily Points
+    name: journalist_daily_points
+    type: usage
+    metric: points
+    limit: 5000
+    timeFrame: day
+    geo: global
+    unit: 1
+    price: included; then $0.0025 per additional point
+    userMultiplied: false
+  elements:
+  - name: 10 Requests per Second
+  - name: 10 Concurrent Requests
+  - name: Unlimited History
+- id: worldnewsapi-editor
+  name: Editor
+  type: paid
+  description: >-
+    High-volume plan. 50,000 points per day included, then $0.002 per additional
+    point, with the highest rate and concurrency limits and strongest uptime
+    guarantee.
+  entries:
+  - label: Monthly Subscription
+    name: editor_subscription
+    type: flat
+    metric: subscription
+    limit: 1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $1779/month
+    userMultiplied: false
+  - label: Included Daily Points
+    name: editor_daily_points
+    type: usage
+    metric: points
+    limit: 50000
+    timeFrame: day
+    geo: global
+    unit: 1
+    price: included; then $0.002 per additional point
+    userMultiplied: false
+  elements:
+  - name: 20 Requests per Second
+  - name: 20 Concurrent Requests
+  - name: Unlimited History
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

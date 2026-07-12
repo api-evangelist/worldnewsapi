@@ -1,0 +1,454 @@
+openapi: 3.0.3
+info:
+  title: World News API
+  description: >-
+    World News API provides real-time and historical news from thousands of
+    sources across 210+ countries and 86+ languages. It supports full-text and
+    semantic news search, geo-targeted local news search via a radius filter,
+    article content extraction from arbitrary URLs, country-level top news
+    clustering, newspaper front-page images, and news-source discovery. All
+    requests are authenticated with an API key passed either as the `api-key`
+    query parameter or the `x-api-key` HTTP header. Each endpoint consumes a
+    number of points (credits) that count against your plan's daily allowance.
+  version: '1.2'
+  contact:
+    name: World News API
+    url: https://worldnewsapi.com
+  termsOfService: https://worldnewsapi.com/terms/
+servers:
+  - url: https://api.worldnewsapi.com
+    description: World News API production
+security:
+  - apiKeyQuery: []
+  - apiKeyHeader: []
+tags:
+  - name: Search News
+    description: Full-text, semantic, and geo/local news search.
+  - name: Extract News
+    description: Extract article content and links from arbitrary news URLs.
+  - name: Top News
+    description: Country-level top news clustered by coverage.
+  - name: Retrieve News
+    description: Retrieve full article records by id.
+  - name: Geo Coordinates
+    description: Resolve a place name to latitude/longitude for local news search.
+  - name: News Sources
+    description: Discover and inspect available news sources.
+  - name: Front Pages
+    description: Retrieve newspaper front-page images by country and date.
+paths:
+  /search-news:
+    get:
+      operationId: searchNews
+      tags:
+        - Search News
+      summary: Search news
+      description: >-
+        Search and filter news by keyword, semantic entities, category,
+        language, source country, publish-date range, and geographic location.
+        The `location-filter` parameter enables local news search by drawing a
+        radius (1-100 km) around a latitude/longitude point, so consumers can
+        find news mentioning or published near a specific place.
+      parameters:
+        - name: text
+          in: query
+          description: The keyword(s) to search for in the news article text.
+          required: false
+          schema:
+            type: string
+        - name: source-country
+          in: query
+          description: The ISO 3166 country code of the news source (e.g. "us", "gb").
+          required: false
+          schema:
+            type: string
+        - name: language
+          in: query
+          description: The ISO 6391 language code of the news (e.g. "en").
+          required: false
+          schema:
+            type: string
+        - name: categories
+          in: query
+          description: >-
+            A comma-separated list of categories to filter by (e.g. politics,
+            sports, business, technology, entertainment, health, science,
+            lifestyle, travel, culture, education, environment, other).
+          required: false
+          schema:
+            type: string
+        - name: entities
+          in: query
+          description: >-
+            Semantic filter for specific people, organizations, or locations,
+            e.g. "ORG:Tesla,PER:Elon Musk,LOC:Berlin".
+          required: false
+          schema:
+            type: string
+        - name: location-filter
+          in: query
+          description: >-
+            Filter news by radius around a location, formatted as
+            "latitude,longitude,radius-in-km" where the radius is between 1 and
+            100 km. Example - news within 15 km of London -
+            "51.509865,-0.118092,15". This powers local and geo news search.
+          required: false
+          schema:
+            type: string
+        - name: earliest-publish-date
+          in: query
+          description: The news must have been published after this date (yyyy-MM-dd HH:mm:ss).
+          required: false
+          schema:
+            type: string
+        - name: latest-publish-date
+          in: query
+          description: The news must have been published before this date (yyyy-MM-dd HH:mm:ss).
+          required: false
+          schema:
+            type: string
+        - name: sort
+          in: query
+          description: The sorting criteria (publish-time, sentiment, relevance).
+          required: false
+          schema:
+            type: string
+        - name: sort-direction
+          in: query
+          description: Whether to sort ascending (ASC) or descending (DESC).
+          required: false
+          schema:
+            type: string
+        - name: offset
+          in: query
+          description: The number of news items to skip, for pagination (default 0).
+          required: false
+          schema:
+            type: integer
+        - name: number
+          in: query
+          description: The number of news items to return, up to 100 (default 10).
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A page of matching news articles.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchNewsResult'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/QuotaExceeded'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /top-news:
+    get:
+      operationId: topNews
+      tags:
+        - Top News
+      summary: Get top news
+      description: >-
+        Retrieve the top news for a country and language on a given day,
+        clustered so that stories covered by more outlets rank higher.
+      parameters:
+        - name: source-country
+          in: query
+          description: The ISO 3166 country code for which to get top news (e.g. "us").
+          required: true
+          schema:
+            type: string
+        - name: language
+          in: query
+          description: The ISO 6391 language code of the top news (e.g. "en").
+          required: true
+          schema:
+            type: string
+        - name: date
+          in: query
+          description: The date for which to get top news (yyyy-MM-dd); defaults to today.
+          required: false
+          schema:
+            type: string
+        - name: headlines-only
+          in: query
+          description: Whether to return only the headlines (true) or full article data (false).
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Top news clusters for the country and date.
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/QuotaExceeded'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /retrieve-news:
+    get:
+      operationId: retrieveNews
+      tags:
+        - Retrieve News
+      summary: Retrieve news by id
+      description: >-
+        Retrieve full information about one or more news articles by their ids,
+        obtained from the Search News or Top News endpoints.
+      parameters:
+        - name: ids
+          in: query
+          description: A comma-separated list of news ids to retrieve.
+          required: true
+          schema:
+            type: string
+        - name: analyze
+          in: query
+          description: Whether to analyze the news (extract entities, etc.).
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: The requested news articles.
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/QuotaExceeded'
+  /extract-news:
+    get:
+      operationId: extractNews
+      tags:
+        - Extract News
+      summary: Extract news
+      description: >-
+        Extract a news article's title, text, images, publish date, and authors
+        from a given URL, with optional named-entity analysis.
+      parameters:
+        - name: url
+          in: query
+          description: The URL of the news article to extract.
+          required: true
+          schema:
+            type: string
+        - name: analyze
+          in: query
+          description: Whether to analyze the extracted news (entities, sentiment).
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: The extracted article content.
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/QuotaExceeded'
+  /extract-news-links:
+    get:
+      operationId: extractNewsLinks
+      tags:
+        - Extract News
+      summary: Extract news links
+      description: Extract news links (article URLs) from a news website's page.
+      parameters:
+        - name: url
+          in: query
+          description: The URL of the news website page from which to extract links.
+          required: true
+          schema:
+            type: string
+        - name: analyze
+          in: query
+          description: Whether to analyze the extracted links.
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: The extracted news links.
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /search-news-sources:
+    get:
+      operationId: searchNewsSources
+      tags:
+        - News Sources
+      summary: Search news sources
+      description: Find and inspect the news sources available in the World News API.
+      parameters:
+        - name: name
+          in: query
+          description: The (partial) name of the news source to search for.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Matching news sources.
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /retrieve-front-page:
+    get:
+      operationId: retrieveFrontPage
+      tags:
+        - Front Pages
+      summary: Retrieve newspaper front page
+      description: Retrieve a newspaper's front-page image for a country and date.
+      parameters:
+        - name: source-country
+          in: query
+          description: The ISO 3166 country code of the newspaper (e.g. "us").
+          required: false
+          schema:
+            type: string
+        - name: source-name
+          in: query
+          description: The identifier of the newspaper (e.g. "the_new_york_times").
+          required: false
+          schema:
+            type: string
+        - name: date
+          in: query
+          description: The date of the front page (yyyy-MM-dd).
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The requested newspaper front page.
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /geo-coordinates:
+    get:
+      operationId: getGeoCoordinates
+      tags:
+        - Geo Coordinates
+      summary: Get geo coordinates
+      description: >-
+        Resolve a free-form location name to its latitude, longitude, and
+        canonical city name. The returned coordinates are used with the Search
+        News `location-filter` parameter to perform local news search.
+      parameters:
+        - name: location
+          in: query
+          description: The location name to resolve, e.g. "Tokyo, Japan".
+          required: true
+          schema:
+            type: string
+        - name: language
+          in: query
+          description: The language of the location name (ISO 6391 code).
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The resolved geo coordinates.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeoCoordinates'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  securitySchemes:
+    apiKeyQuery:
+      type: apiKey
+      in: query
+      name: api-key
+      description: API key passed as the "api-key" query parameter.
+    apiKeyHeader:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: API key passed as the "x-api-key" HTTP header.
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+    QuotaExceeded:
+      description: Daily point quota exceeded for the current plan.
+    RateLimited:
+      description: Too many requests - the per-second or concurrency limit was exceeded.
+  schemas:
+    GeoCoordinates:
+      type: object
+      properties:
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        city:
+          type: string
+    NewsArticle:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        text:
+          type: string
+        summary:
+          type: string
+        url:
+          type: string
+        image:
+          type: string
+        publish_date:
+          type: string
+        author:
+          type: string
+        authors:
+          type: array
+          items:
+            type: string
+        language:
+          type: string
+        source_country:
+          type: string
+        category:
+          type: string
+        sentiment:
+          type: number
+          format: double
+    SearchNewsResult:
+      type: object
+      properties:
+        offset:
+          type: integer
+        number:
+          type: integer
+        available:
+          type: integer
+        news:
+          type: array
+          items:
+            $ref: '#/components/schemas/NewsArticle'

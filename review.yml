@@ -1,0 +1,81 @@
+aid: worldnewsapi
+name: World News API
+review:
+  question: Does World News API expose a documented public WebSocket API?
+  answer: false
+  date: '2026-07-11'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was authored. World News API's entire documented public
+    surface is request/response REST over HTTPS under
+    https://api.worldnewsapi.com. There is no server-push transport (WebSocket
+    or Server-Sent Events) and no streaming endpoint to model. "Real-time" here
+    means the news corpus is updated continuously and queried on demand via the
+    REST search/top-news endpoints, not that the API pushes events to clients.
+findings:
+  summary: |
+    World News API does not publish a documented public WebSocket API. It is a
+    news-data REST API covering thousands of sources across 210+ countries and
+    86+ languages. All documented endpoints are HTTP GET requests to
+    https://api.worldnewsapi.com, authenticated with an API key passed as the
+    `api-key` query parameter or the `x-api-key` header, and metered in points
+    against a daily plan allowance. Endpoints include /search-news (with a
+    location-filter radius parameter for local/geo news search), /geo-coordinates,
+    /top-news, /retrieve-news, /extract-news, /extract-news-links,
+    /search-news-sources, and /retrieve-front-page. No realtime, bidirectional,
+    or streaming WebSocket (ws:// or wss://) endpoint is documented anywhere in
+    the API reference, quick-start, or the official OpenAPI 3 specification.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.worldnewsapi.com
+      documented: true
+      note: All endpoints are HTTP GET request/response over HTTPS.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented in the docs or the official OpenAPI spec as of the review date.
+    - protocol: SSE
+      scheme: https
+      documented: false
+      note: No Server-Sent Events / server-push transport is documented.
+  endpointsConfirmedRest:
+    - GET https://api.worldnewsapi.com/search-news
+    - GET https://api.worldnewsapi.com/top-news
+    - GET https://api.worldnewsapi.com/retrieve-news
+    - GET https://api.worldnewsapi.com/extract-news
+    - GET https://api.worldnewsapi.com/extract-news-links
+    - GET https://api.worldnewsapi.com/search-news-sources
+    - GET https://api.worldnewsapi.com/retrieve-front-page
+    - GET https://api.worldnewsapi.com/geo-coordinates
+  localNewsNote: |
+    Local news search is supported through two REST endpoints working together:
+    GET /geo-coordinates resolves a place name to latitude/longitude, and
+    GET /search-news accepts a location-filter parameter formatted as
+    "latitude,longitude,radius-in-km" (radius 1-100 km) to return news near that
+    point. This is on-demand REST querying, not a streaming/WebSocket surface.
+sources:
+  - url: https://worldnewsapi.com/docs/
+    type: Documentation
+    note: Documentation index; lists REST endpoints and API-key auth. No WebSocket mentioned.
+  - url: https://worldnewsapi.com/docs/search-news/
+    type: APIReference
+    note: GET /search-news with location-filter for geo/local news search.
+  - url: https://worldnewsapi.com/docs/get-geo-coordinates/
+    type: APIReference
+    note: GET /geo-coordinates resolves a place name to coordinates for location-filter.
+  - url: https://worldnewsapi.com/pricing/
+    type: Pricing
+    note: Point-metered plans (Free/Reporter/Journalist/Editor); per-second and concurrency limits.
+  - url: https://github.com/ddsky/world-news-api-clients
+    type: SourceCode
+    note: Official multi-language SDK clients and OpenAPI 3 spec (world-news-api-openapi-3.json). All REST.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket or any server-push protocol surface exists. World News API's
+    public API is request/response REST (HTTP GET) only, so no AsyncAPI document
+    was created. An OpenAPI 3 specification grounding the REST endpoints was
+    authored at openapi/worldnewsapi-openapi.yml.

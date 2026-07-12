@@ -1,0 +1,220 @@
+{
+  "info": {
+    "name": "World News API",
+    "description": "Real-time and historical news data across 210+ countries and 86+ languages. Full-text and semantic search, local/geo news search (location-filter radius), article extraction, top news, front pages, and source discovery. Base URL: https://api.worldnewsapi.com. Authenticate with an API key as the 'api-key' query parameter or the 'x-api-key' header.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      { "key": "key", "value": "api-key", "type": "string" },
+      { "key": "value", "value": "{{apiKey}}", "type": "string" },
+      { "key": "in", "value": "query", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://api.worldnewsapi.com", "type": "string" },
+    { "key": "apiKey", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Search News",
+      "item": [
+        {
+          "name": "Search news",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/search-news?text=&language=en&source-country=us&number=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["search-news"],
+              "query": [
+                { "key": "text", "value": "", "description": "Keyword(s) to search for." },
+                { "key": "language", "value": "en", "description": "ISO 6391 language code." },
+                { "key": "source-country", "value": "us", "description": "ISO 3166 source country code." },
+                { "key": "categories", "value": "", "description": "Comma-separated categories." },
+                { "key": "entities", "value": "", "description": "Semantic filter e.g. LOC:Berlin." },
+                { "key": "earliest-publish-date", "value": "", "description": "Published after (yyyy-MM-dd HH:mm:ss)." },
+                { "key": "latest-publish-date", "value": "", "description": "Published before (yyyy-MM-dd HH:mm:ss)." },
+                { "key": "sort", "value": "", "description": "publish-time | sentiment | relevance." },
+                { "key": "offset", "value": "0", "description": "Pagination offset." },
+                { "key": "number", "value": "10", "description": "Results per page (max 100)." }
+              ]
+            },
+            "description": "Search and filter news by keyword, entities, category, language, source country, and publish-date range."
+          }
+        },
+        {
+          "name": "Search local news (location filter)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/search-news?location-filter=51.509865,-0.118092,15&language=en&number=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["search-news"],
+              "query": [
+                { "key": "location-filter", "value": "51.509865,-0.118092,15", "description": "latitude,longitude,radius-in-km (radius 1-100). 15 km around London." },
+                { "key": "language", "value": "en", "description": "ISO 6391 language code." },
+                { "key": "number", "value": "10", "description": "Results per page (max 100)." }
+              ]
+            },
+            "description": "Local/geo news search: draw a radius around a point and return news near it."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Geo Coordinates",
+      "item": [
+        {
+          "name": "Get geo coordinates",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/geo-coordinates?location=London, UK&language=en",
+              "host": ["{{baseUrl}}"],
+              "path": ["geo-coordinates"],
+              "query": [
+                { "key": "location", "value": "London, UK", "description": "Location name to resolve." },
+                { "key": "language", "value": "en", "description": "Language of the location name." }
+              ]
+            },
+            "description": "Resolve a place name to latitude, longitude, and city for the Search News location-filter."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Top News",
+      "item": [
+        {
+          "name": "Get top news",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/top-news?source-country=us&language=en",
+              "host": ["{{baseUrl}}"],
+              "path": ["top-news"],
+              "query": [
+                { "key": "source-country", "value": "us", "description": "ISO 3166 country code." },
+                { "key": "language", "value": "en", "description": "ISO 6391 language code." },
+                { "key": "date", "value": "", "description": "Date (yyyy-MM-dd); defaults to today." },
+                { "key": "headlines-only", "value": "false", "description": "Return only headlines if true." }
+              ]
+            },
+            "description": "Retrieve country-level top news clustered by outlet coverage."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Retrieve News",
+      "item": [
+        {
+          "name": "Retrieve news by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/retrieve-news?ids=2352,2354",
+              "host": ["{{baseUrl}}"],
+              "path": ["retrieve-news"],
+              "query": [
+                { "key": "ids", "value": "2352,2354", "description": "Comma-separated news ids." },
+                { "key": "analyze", "value": "false", "description": "Whether to analyze the news." }
+              ]
+            },
+            "description": "Retrieve full article records by id."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Extract News",
+      "item": [
+        {
+          "name": "Extract news",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/extract-news?url=https://example.com/article&analyze=true",
+              "host": ["{{baseUrl}}"],
+              "path": ["extract-news"],
+              "query": [
+                { "key": "url", "value": "https://example.com/article", "description": "URL of the article to extract." },
+                { "key": "analyze", "value": "true", "description": "Whether to run named-entity analysis." }
+              ]
+            },
+            "description": "Extract an article's title, text, images, publish date, and authors from a URL."
+          }
+        },
+        {
+          "name": "Extract news links",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/extract-news-links?url=https://example.com&analyze=false",
+              "host": ["{{baseUrl}}"],
+              "path": ["extract-news-links"],
+              "query": [
+                { "key": "url", "value": "https://example.com", "description": "URL of the news website page." },
+                { "key": "analyze", "value": "false", "description": "Whether to analyze the links." }
+              ]
+            },
+            "description": "Extract the set of article links from a news website page."
+          }
+        }
+      ]
+    },
+    {
+      "name": "News Sources",
+      "item": [
+        {
+          "name": "Search news sources",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/search-news-sources?name=times",
+              "host": ["{{baseUrl}}"],
+              "path": ["search-news-sources"],
+              "query": [
+                { "key": "name", "value": "times", "description": "(Partial) name of the news source." }
+              ]
+            },
+            "description": "Find and inspect available news sources by name."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Front Pages",
+      "item": [
+        {
+          "name": "Retrieve front page",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/retrieve-front-page?source-country=us&source-name=the_new_york_times&date=2026-07-11",
+              "host": ["{{baseUrl}}"],
+              "path": ["retrieve-front-page"],
+              "query": [
+                { "key": "source-country", "value": "us", "description": "ISO 3166 country code of the newspaper." },
+                { "key": "source-name", "value": "the_new_york_times", "description": "Newspaper identifier." },
+                { "key": "date", "value": "2026-07-11", "description": "Date of the front page (yyyy-MM-dd)." }
+              ]
+            },
+            "description": "Retrieve a newspaper's front-page image by country, name, and date."
+          }
+        }
+      ]
+    }
+  ]
+}

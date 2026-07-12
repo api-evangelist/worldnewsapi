@@ -1,0 +1,172 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "World News API",
+    "version": "1.2"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "api-key",
+      "value": "{{apiKey}}",
+      "in": "query"
+    }
+  },
+  "items": [
+    {
+      "info": { "name": "Search News", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Search news.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.worldnewsapi.com/search-news?text=&language=en&source-country=us&number=10",
+            "params": [
+              { "name": "text", "value": "", "type": "query", "description": "Keyword(s) to search for in the article text." },
+              { "name": "language", "value": "en", "type": "query", "description": "ISO 6391 language code." },
+              { "name": "source-country", "value": "us", "type": "query", "description": "ISO 3166 source country code." },
+              { "name": "categories", "value": "", "type": "query", "description": "Comma-separated categories to filter by." },
+              { "name": "entities", "value": "", "type": "query", "description": "Semantic filter, e.g. ORG:Tesla,PER:Elon Musk,LOC:Berlin." },
+              { "name": "earliest-publish-date", "value": "", "type": "query", "description": "Published after (yyyy-MM-dd HH:mm:ss)." },
+              { "name": "latest-publish-date", "value": "", "type": "query", "description": "Published before (yyyy-MM-dd HH:mm:ss)." },
+              { "name": "sort", "value": "", "type": "query", "description": "Sort by publish-time, sentiment, or relevance." },
+              { "name": "offset", "value": "0", "type": "query", "description": "Pagination offset." },
+              { "name": "number", "value": "10", "type": "query", "description": "Number of results (max 100)." }
+            ]
+          },
+          "docs": "Search and filter news by keyword, entities, category, language, source country, and publish-date range."
+        },
+        {
+          "info": { "name": "Search local news (location filter).", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.worldnewsapi.com/search-news?location-filter=51.509865,-0.118092,15&language=en&number=10",
+            "params": [
+              { "name": "location-filter", "value": "51.509865,-0.118092,15", "type": "query", "description": "latitude,longitude,radius-in-km (radius 1-100). Returns news near the point - here 15 km around London." },
+              { "name": "language", "value": "en", "type": "query", "description": "ISO 6391 language code." },
+              { "name": "number", "value": "10", "type": "query", "description": "Number of results (max 100)." }
+            ]
+          },
+          "docs": "Local/geo news search: draw a radius around a latitude/longitude point and return news published or mentioned near it."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Geo Coordinates", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Get geo coordinates.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.worldnewsapi.com/geo-coordinates?location=London, UK&language=en",
+            "params": [
+              { "name": "location", "value": "London, UK", "type": "query", "description": "Location name to resolve to coordinates." },
+              { "name": "language", "value": "en", "type": "query", "description": "Language of the location name." }
+            ]
+          },
+          "docs": "Resolve a place name to latitude, longitude, and city name for use with the Search News location-filter."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Top News", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Get top news.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.worldnewsapi.com/top-news?source-country=us&language=en",
+            "params": [
+              { "name": "source-country", "value": "us", "type": "query", "description": "ISO 3166 country code." },
+              { "name": "language", "value": "en", "type": "query", "description": "ISO 6391 language code." },
+              { "name": "date", "value": "", "type": "query", "description": "Date (yyyy-MM-dd); defaults to today." },
+              { "name": "headlines-only", "value": "false", "type": "query", "description": "Return only headlines if true." }
+            ]
+          },
+          "docs": "Retrieve country-level top news clustered by how many outlets cover each story."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Retrieve News", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Retrieve news by id.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.worldnewsapi.com/retrieve-news?ids=2352,2354",
+            "params": [
+              { "name": "ids", "value": "2352,2354", "type": "query", "description": "Comma-separated news ids from Search News or Top News." },
+              { "name": "analyze", "value": "false", "type": "query", "description": "Whether to analyze the news." }
+            ]
+          },
+          "docs": "Retrieve full article records by id."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Extract News", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Extract news.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.worldnewsapi.com/extract-news?url=https://example.com/article&analyze=true",
+            "params": [
+              { "name": "url", "value": "https://example.com/article", "type": "query", "description": "URL of the article to extract." },
+              { "name": "analyze", "value": "true", "type": "query", "description": "Whether to run named-entity analysis." }
+            ]
+          },
+          "docs": "Extract an article's title, text, images, publish date, and authors from a URL."
+        },
+        {
+          "info": { "name": "Extract news links.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.worldnewsapi.com/extract-news-links?url=https://example.com&analyze=false",
+            "params": [
+              { "name": "url", "value": "https://example.com", "type": "query", "description": "URL of the news website page." },
+              { "name": "analyze", "value": "false", "type": "query", "description": "Whether to analyze the links." }
+            ]
+          },
+          "docs": "Extract the set of article links from a news website page."
+        }
+      ]
+    },
+    {
+      "info": { "name": "News Sources", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Search news sources.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.worldnewsapi.com/search-news-sources?name=times",
+            "params": [
+              { "name": "name", "value": "times", "type": "query", "description": "(Partial) name of the news source." }
+            ]
+          },
+          "docs": "Find and inspect available news sources by name."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Front Pages", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Retrieve front page.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.worldnewsapi.com/retrieve-front-page?source-country=us&source-name=the_new_york_times&date=2026-07-11",
+            "params": [
+              { "name": "source-country", "value": "us", "type": "query", "description": "ISO 3166 country code of the newspaper." },
+              { "name": "source-name", "value": "the_new_york_times", "type": "query", "description": "Newspaper identifier." },
+              { "name": "date", "value": "2026-07-11", "type": "query", "description": "Date of the front page (yyyy-MM-dd)." }
+            ]
+          },
+          "docs": "Retrieve a newspaper's front-page image by country, name, and date."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

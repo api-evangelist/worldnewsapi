@@ -1,0 +1,90 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: World News API
+providerId: worldnewsapi
+created: '2026-07-11'
+modified: '2026-07-11'
+reconciled: false
+tags:
+- News
+- News Search
+- Local News
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of World News API spend. Cost is driven by point (credit)
+  consumption metered per API call against a daily allowance, plus a fixed
+  monthly subscription per plan tier. Above the included daily allowance, paid
+  plans bill per additional point at a declining per-point rate as the tier
+  rises (Reporter $0.003, Journalist $0.0025, Editor $0.002). Because different
+  endpoints and parameter combinations consume different point amounts, cost is
+  best controlled by minimizing wasted calls - caching geo-coordinate lookups,
+  requesting only the fields and result counts needed, and constraining
+  location, date, and language filters.
+notes: >-
+  Per-endpoint point costs are not fully published and rates were captured from
+  the pricing page on 2026-07-11; verify at https://worldnewsapi.com/pricing/.
+sources:
+- https://worldnewsapi.com/pricing/
+- https://worldnewsapi.com/docs/
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: World News API
+serviceCategory: News and Media Data
+billingModel:
+  pricingCategory: Subscription plus Usage-Based
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+  - Purchase
+  - Usage
+focusColumns:
+  ServiceName: World News API
+  ServiceCategory: News and Media Data
+  ProviderName: World News API
+  PublisherName: World News API
+  InvoiceIssuerName: World News API
+  BillingCurrency: USD
+  ChargeCategory: Usage
+  PricingCategory: Usage-Based
+meters:
+- name: points
+  description: Points (credits) consumed per API call; the primary usage meter, varying by endpoint and parameters.
+  unit: points
+  aggregation: sum
+  dimensions:
+  - account
+  - endpoint
+- name: subscription
+  description: Fixed monthly plan fee per tier (Reporter, Journalist, Editor).
+  unit: months
+  aggregation: sum
+  dimensions:
+  - account
+  - plan
+- name: overage_points
+  description: Points consumed beyond the included daily allowance, billed per point on paid plans.
+  unit: points
+  aggregation: sum
+  dimensions:
+  - account
+  - plan
+principles:
+- name: Visibility
+  description: Track daily point consumption via the X-API-Quota-* response headers and attribute points to endpoints and workloads.
+- name: Allocation
+  description: Use separate API keys or accounts per team/workload so point usage maps to internal cost centers.
+- name: Optimization
+  description: Cache /geo-coordinates results, request only needed fields and result counts, tighten location/date/language filters, and avoid re-extracting the same URLs to reduce point spend.
+- name: Accountability
+  description: Set the plan tier to the daily point allowance the workload actually needs and review overage against per-point rates monthly.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

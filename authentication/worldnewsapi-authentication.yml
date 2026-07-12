@@ -1,0 +1,26 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/worldnewsapi-openapi.yml
+summary:
+  types:
+  - apiKey
+schemes:
+- name: apiKeyQuery
+  type: apiKey
+  in: query
+  parameterName: api-key
+  description: >-
+    API key passed as the "api-key" query parameter, e.g.
+    https://api.worldnewsapi.com/search-news?text=news&api-key=YOUR_API_KEY.
+    Obtain a key by signing up for a free account in the API console.
+  sources:
+  - openapi/worldnewsapi-openapi.yml
+- name: apiKeyHeader
+  type: apiKey
+  in: header
+  parameterName: x-api-key
+  description: >-
+    The same API key may instead be passed as the "x-api-key" HTTP request
+    header.
+  sources:
+  - openapi/worldnewsapi-openapi.yml
