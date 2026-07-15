@@ -190,6 +190,8 @@ apis:
     Retrieve newspaper front-page images by country, newspaper identifier, and
     date, for media monitoring and visual news archives.
 common:
+- type: AgenticAccess
+  url: agentic-access/worldnewsapi-agentic-access.yml
 - type: Authentication
   url: authentication/worldnewsapi-authentication.yml
 - type: DomainSecurity
