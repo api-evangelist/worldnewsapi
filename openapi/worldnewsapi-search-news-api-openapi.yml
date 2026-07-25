@@ -1,0 +1,177 @@
+openapi: 3.0.3
+info:
+  title: World News Extract News Search News API
+  description: World News API provides real-time and historical news from thousands of sources across 210+ countries and 86+ languages. It supports full-text and semantic news search, geo-targeted local news search via a radius filter, article content extraction from arbitrary URLs, country-level top news clustering, newspaper front-page images, and news-source discovery. All requests are authenticated with an API key passed either as the `api-key` query parameter or the `x-api-key` HTTP header. Each endpoint consumes a number of points (credits) that count against your plan's daily allowance.
+  version: '1.2'
+  contact:
+    name: World News API
+    url: https://worldnewsapi.com
+  termsOfService: https://worldnewsapi.com/terms/
+servers:
+- url: https://api.worldnewsapi.com
+  description: World News API production
+security:
+- apiKeyQuery: []
+- apiKeyHeader: []
+tags:
+- name: Search News
+  description: Full-text, semantic, and geo/local news search.
+paths:
+  /search-news:
+    get:
+      operationId: searchNews
+      tags:
+      - Search News
+      summary: Search news
+      description: Search and filter news by keyword, semantic entities, category, language, source country, publish-date range, and geographic location. The `location-filter` parameter enables local news search by drawing a radius (1-100 km) around a latitude/longitude point, so consumers can find news mentioning or published near a specific place.
+      parameters:
+      - name: text
+        in: query
+        description: The keyword(s) to search for in the news article text.
+        required: false
+        schema:
+          type: string
+      - name: source-country
+        in: query
+        description: The ISO 3166 country code of the news source (e.g. "us", "gb").
+        required: false
+        schema:
+          type: string
+      - name: language
+        in: query
+        description: The ISO 6391 language code of the news (e.g. "en").
+        required: false
+        schema:
+          type: string
+      - name: categories
+        in: query
+        description: A comma-separated list of categories to filter by (e.g. politics, sports, business, technology, entertainment, health, science, lifestyle, travel, culture, education, environment, other).
+        required: false
+        schema:
+          type: string
+      - name: entities
+        in: query
+        description: Semantic filter for specific people, organizations, or locations, e.g. "ORG:Tesla,PER:Elon Musk,LOC:Berlin".
+        required: false
+        schema:
+          type: string
+      - name: location-filter
+        in: query
+        description: Filter news by radius around a location, formatted as "latitude,longitude,radius-in-km" where the radius is between 1 and 100 km. Example - news within 15 km of London - "51.509865,-0.118092,15". This powers local and geo news search.
+        required: false
+        schema:
+          type: string
+      - name: earliest-publish-date
+        in: query
+        description: The news must have been published after this date (yyyy-MM-dd HH:mm:ss).
+        required: false
+        schema:
+          type: string
+      - name: latest-publish-date
+        in: query
+        description: The news must have been published before this date (yyyy-MM-dd HH:mm:ss).
+        required: false
+        schema:
+          type: string
+      - name: sort
+        in: query
+        description: The sorting criteria (publish-time, sentiment, relevance).
+        required: false
+        schema:
+          type: string
+      - name: sort-direction
+        in: query
+        description: Whether to sort ascending (ASC) or descending (DESC).
+        required: false
+        schema:
+          type: string
+      - name: offset
+        in: query
+        description: The number of news items to skip, for pagination (default 0).
+        required: false
+        schema:
+          type: integer
+      - name: number
+        in: query
+        description: The number of news items to return, up to 100 (default 10).
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: A page of matching news articles.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchNewsResult'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/QuotaExceeded'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+    QuotaExceeded:
+      description: Daily point quota exceeded for the current plan.
+    RateLimited:
+      description: Too many requests - the per-second or concurrency limit was exceeded.
+  schemas:
+    SearchNewsResult:
+      type: object
+      properties:
+        offset:
+          type: integer
+        number:
+          type: integer
+        available:
+          type: integer
+        news:
+          type: array
+          items:
+            $ref: '#/components/schemas/NewsArticle'
+    NewsArticle:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        text:
+          type: string
+        summary:
+          type: string
+        url:
+          type: string
+        image:
+          type: string
+        publish_date:
+          type: string
+        author:
+          type: string
+        authors:
+          type: array
+          items:
+            type: string
+        language:
+          type: string
+        source_country:
+          type: string
+        category:
+          type: string
+        sentiment:
+          type: number
+          format: double
+  securitySchemes:
+    apiKeyQuery:
+      type: apiKey
+      in: query
+      name: api-key
+      description: API key passed as the "api-key" query parameter.
+    apiKeyHeader:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: API key passed as the "x-api-key" HTTP header.

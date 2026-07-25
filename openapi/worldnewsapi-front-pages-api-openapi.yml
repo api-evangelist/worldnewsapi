@@ -1,0 +1,69 @@
+openapi: 3.0.3
+info:
+  title: World News Extract News Front Pages API
+  description: World News API provides real-time and historical news from thousands of sources across 210+ countries and 86+ languages. It supports full-text and semantic news search, geo-targeted local news search via a radius filter, article content extraction from arbitrary URLs, country-level top news clustering, newspaper front-page images, and news-source discovery. All requests are authenticated with an API key passed either as the `api-key` query parameter or the `x-api-key` HTTP header. Each endpoint consumes a number of points (credits) that count against your plan's daily allowance.
+  version: '1.2'
+  contact:
+    name: World News API
+    url: https://worldnewsapi.com
+  termsOfService: https://worldnewsapi.com/terms/
+servers:
+- url: https://api.worldnewsapi.com
+  description: World News API production
+security:
+- apiKeyQuery: []
+- apiKeyHeader: []
+tags:
+- name: Front Pages
+  description: Retrieve newspaper front-page images by country and date.
+paths:
+  /retrieve-front-page:
+    get:
+      operationId: retrieveFrontPage
+      tags:
+      - Front Pages
+      summary: Retrieve newspaper front page
+      description: Retrieve a newspaper's front-page image for a country and date.
+      parameters:
+      - name: source-country
+        in: query
+        description: The ISO 3166 country code of the newspaper (e.g. "us").
+        required: false
+        schema:
+          type: string
+      - name: source-name
+        in: query
+        description: The identifier of the newspaper (e.g. "the_new_york_times").
+        required: false
+        schema:
+          type: string
+      - name: date
+        in: query
+        description: The date of the front page (yyyy-MM-dd).
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The requested newspaper front page.
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+  securitySchemes:
+    apiKeyQuery:
+      type: apiKey
+      in: query
+      name: api-key
+      description: API key passed as the "api-key" query parameter.
+    apiKeyHeader:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: API key passed as the "x-api-key" HTTP header.

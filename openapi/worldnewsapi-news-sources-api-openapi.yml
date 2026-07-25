@@ -1,0 +1,57 @@
+openapi: 3.0.3
+info:
+  title: World News Extract News News Sources API
+  description: World News API provides real-time and historical news from thousands of sources across 210+ countries and 86+ languages. It supports full-text and semantic news search, geo-targeted local news search via a radius filter, article content extraction from arbitrary URLs, country-level top news clustering, newspaper front-page images, and news-source discovery. All requests are authenticated with an API key passed either as the `api-key` query parameter or the `x-api-key` HTTP header. Each endpoint consumes a number of points (credits) that count against your plan's daily allowance.
+  version: '1.2'
+  contact:
+    name: World News API
+    url: https://worldnewsapi.com
+  termsOfService: https://worldnewsapi.com/terms/
+servers:
+- url: https://api.worldnewsapi.com
+  description: World News API production
+security:
+- apiKeyQuery: []
+- apiKeyHeader: []
+tags:
+- name: News Sources
+  description: Discover and inspect available news sources.
+paths:
+  /search-news-sources:
+    get:
+      operationId: searchNewsSources
+      tags:
+      - News Sources
+      summary: Search news sources
+      description: Find and inspect the news sources available in the World News API.
+      parameters:
+      - name: name
+        in: query
+        description: The (partial) name of the news source to search for.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Matching news sources.
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+  securitySchemes:
+    apiKeyQuery:
+      type: apiKey
+      in: query
+      name: api-key
+      description: API key passed as the "api-key" query parameter.
+    apiKeyHeader:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: API key passed as the "x-api-key" HTTP header.

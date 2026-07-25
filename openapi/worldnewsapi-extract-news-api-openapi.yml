@@ -1,0 +1,96 @@
+openapi: 3.0.3
+info:
+  title: World News Extract News API
+  description: World News API provides real-time and historical news from thousands of sources across 210+ countries and 86+ languages. It supports full-text and semantic news search, geo-targeted local news search via a radius filter, article content extraction from arbitrary URLs, country-level top news clustering, newspaper front-page images, and news-source discovery. All requests are authenticated with an API key passed either as the `api-key` query parameter or the `x-api-key` HTTP header. Each endpoint consumes a number of points (credits) that count against your plan's daily allowance.
+  version: '1.2'
+  contact:
+    name: World News API
+    url: https://worldnewsapi.com
+  termsOfService: https://worldnewsapi.com/terms/
+servers:
+- url: https://api.worldnewsapi.com
+  description: World News API production
+security:
+- apiKeyQuery: []
+- apiKeyHeader: []
+tags:
+- name: Extract News
+  description: Extract article content and links from arbitrary news URLs.
+paths:
+  /extract-news:
+    get:
+      operationId: extractNews
+      tags:
+      - Extract News
+      summary: Extract news
+      description: Extract a news article's title, text, images, publish date, and authors from a given URL, with optional named-entity analysis.
+      parameters:
+      - name: url
+        in: query
+        description: The URL of the news article to extract.
+        required: true
+        schema:
+          type: string
+      - name: analyze
+        in: query
+        description: Whether to analyze the extracted news (entities, sentiment).
+        required: false
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: The extracted article content.
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/QuotaExceeded'
+  /extract-news-links:
+    get:
+      operationId: extractNewsLinks
+      tags:
+      - Extract News
+      summary: Extract news links
+      description: Extract news links (article URLs) from a news website's page.
+      parameters:
+      - name: url
+        in: query
+        description: The URL of the news website page from which to extract links.
+        required: true
+        schema:
+          type: string
+      - name: analyze
+        in: query
+        description: Whether to analyze the extracted links.
+        required: false
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: The extracted news links.
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  responses:
+    QuotaExceeded:
+      description: Daily point quota exceeded for the current plan.
+    Unauthorized:
+      description: Missing or invalid API key.
+  securitySchemes:
+    apiKeyQuery:
+      type: apiKey
+      in: query
+      name: api-key
+      description: API key passed as the "api-key" query parameter.
+    apiKeyHeader:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: API key passed as the "x-api-key" HTTP header.

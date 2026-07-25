@@ -1,0 +1,67 @@
+openapi: 3.0.3
+info:
+  title: World News Extract News Retrieve News API
+  description: World News API provides real-time and historical news from thousands of sources across 210+ countries and 86+ languages. It supports full-text and semantic news search, geo-targeted local news search via a radius filter, article content extraction from arbitrary URLs, country-level top news clustering, newspaper front-page images, and news-source discovery. All requests are authenticated with an API key passed either as the `api-key` query parameter or the `x-api-key` HTTP header. Each endpoint consumes a number of points (credits) that count against your plan's daily allowance.
+  version: '1.2'
+  contact:
+    name: World News API
+    url: https://worldnewsapi.com
+  termsOfService: https://worldnewsapi.com/terms/
+servers:
+- url: https://api.worldnewsapi.com
+  description: World News API production
+security:
+- apiKeyQuery: []
+- apiKeyHeader: []
+tags:
+- name: Retrieve News
+  description: Retrieve full article records by id.
+paths:
+  /retrieve-news:
+    get:
+      operationId: retrieveNews
+      tags:
+      - Retrieve News
+      summary: Retrieve news by id
+      description: Retrieve full information about one or more news articles by their ids, obtained from the Search News or Top News endpoints.
+      parameters:
+      - name: ids
+        in: query
+        description: A comma-separated list of news ids to retrieve.
+        required: true
+        schema:
+          type: string
+      - name: analyze
+        in: query
+        description: Whether to analyze the news (extract entities, etc.).
+        required: false
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: The requested news articles.
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/QuotaExceeded'
+components:
+  responses:
+    QuotaExceeded:
+      description: Daily point quota exceeded for the current plan.
+    Unauthorized:
+      description: Missing or invalid API key.
+  securitySchemes:
+    apiKeyQuery:
+      type: apiKey
+      in: query
+      name: api-key
+      description: API key passed as the "api-key" query parameter.
+    apiKeyHeader:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: API key passed as the "x-api-key" HTTP header.

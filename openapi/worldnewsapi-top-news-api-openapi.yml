@@ -1,0 +1,83 @@
+openapi: 3.0.3
+info:
+  title: World News Extract News Top News API
+  description: World News API provides real-time and historical news from thousands of sources across 210+ countries and 86+ languages. It supports full-text and semantic news search, geo-targeted local news search via a radius filter, article content extraction from arbitrary URLs, country-level top news clustering, newspaper front-page images, and news-source discovery. All requests are authenticated with an API key passed either as the `api-key` query parameter or the `x-api-key` HTTP header. Each endpoint consumes a number of points (credits) that count against your plan's daily allowance.
+  version: '1.2'
+  contact:
+    name: World News API
+    url: https://worldnewsapi.com
+  termsOfService: https://worldnewsapi.com/terms/
+servers:
+- url: https://api.worldnewsapi.com
+  description: World News API production
+security:
+- apiKeyQuery: []
+- apiKeyHeader: []
+tags:
+- name: Top News
+  description: Country-level top news clustered by coverage.
+paths:
+  /top-news:
+    get:
+      operationId: topNews
+      tags:
+      - Top News
+      summary: Get top news
+      description: Retrieve the top news for a country and language on a given day, clustered so that stories covered by more outlets rank higher.
+      parameters:
+      - name: source-country
+        in: query
+        description: The ISO 3166 country code for which to get top news (e.g. "us").
+        required: true
+        schema:
+          type: string
+      - name: language
+        in: query
+        description: The ISO 6391 language code of the top news (e.g. "en").
+        required: true
+        schema:
+          type: string
+      - name: date
+        in: query
+        description: The date for which to get top news (yyyy-MM-dd); defaults to today.
+        required: false
+        schema:
+          type: string
+      - name: headlines-only
+        in: query
+        description: Whether to return only the headlines (true) or full article data (false).
+        required: false
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: Top news clusters for the country and date.
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/QuotaExceeded'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+components:
+  responses:
+    QuotaExceeded:
+      description: Daily point quota exceeded for the current plan.
+    Unauthorized:
+      description: Missing or invalid API key.
+    RateLimited:
+      description: Too many requests - the per-second or concurrency limit was exceeded.
+  securitySchemes:
+    apiKeyQuery:
+      type: apiKey
+      in: query
+      name: api-key
+      description: API key passed as the "api-key" query parameter.
+    apiKeyHeader:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: API key passed as the "x-api-key" HTTP header.
