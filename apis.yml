@@ -13,7 +13,10 @@ description: >-
   coordinates to Search News via the location-filter parameter to find news
   published or mentioned near that place. Requests are authenticated with an API
   key (api-key query parameter or x-api-key header) and metered in points against
-  a daily plan allowance.
+  a daily plan allowance, with X-API-Quota-* headers returning cost and remaining
+  budget on every response. The provider publishes its own OpenAPI 3 document,
+  generated client libraries for two dozen languages, and a first-party
+  local-stdio MCP server exposing eight news tools to AI agents.
 accessModel:
   pricing: freemium
   onboarding: self-serve
@@ -37,170 +40,136 @@ tags:
 - News Data
 - Sentiment Analysis
 - Content Extraction
+- Front Pages
+- MCP
+- RSS
+- Semantic Search
 created: '2026-07-11'
-modified: '2026-07-11'
+modified: '2026-08-13'
 specificationVersion: '0.19'
 apis:
 - aid: worldnewsapi:worldnewsapi-extract-news-api
   name: World News API Extract News API
   description: Extract article content and links from arbitrary news URLs.
-  humanURL: https://worldnewsapi.com/docs/search-news/
+  humanURL: https://worldnewsapi.com/docs/extract-news/
   baseURL: https://api.worldnewsapi.com
   tags:
   - Extract News
   properties:
   - type: OpenAPI
     url: openapi/worldnewsapi-extract-news-api-openapi.yml
+  - type: Overlay
+    url: overlays/worldnewsapi-extract-news-api-overlay.yaml
   - type: Documentation
-    url: https://worldnewsapi.com/docs/search-news/
+    url: https://worldnewsapi.com/docs/extract-news/
   - type: APIReference
-    url: https://worldnewsapi.com/docs/search-news/
-  - type: PostmanCollection
-    url: collections/worldnewsapi.postman_collection.json
-  - type: OpenCollection
-    url: collections/worldnewsapi.opencollection.json
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/get-geo-coordinates/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/top-news/
-  - type: Documentation
     url: https://worldnewsapi.com/docs/extract-news/
   - type: Documentation
     url: https://worldnewsapi.com/docs/extract-news-links/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/retrieve-news/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/search-news-sources/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/newspaper-front-pages/
+  - type: PostmanCollection
+    url: collections/worldnewsapi-extract-news-api.postman_collection.json
+  - type: OpenCollection
+    url: collections/worldnewsapi-extract-news-api.opencollection.json
+  - type: MCPServer
+    url: mcp/worldnewsapi-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/worldnewsapi-tool-crosswalk.yml
 - aid: worldnewsapi:worldnewsapi-front-pages-api
   name: World News API Front Pages API
   description: Retrieve newspaper front-page images by country and date.
-  humanURL: https://worldnewsapi.com/docs/search-news/
+  humanURL: https://worldnewsapi.com/docs/newspaper-front-pages/
   baseURL: https://api.worldnewsapi.com
   tags:
   - Front Pages
   properties:
   - type: OpenAPI
     url: openapi/worldnewsapi-front-pages-api-openapi.yml
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/search-news/
-  - type: APIReference
-    url: https://worldnewsapi.com/docs/search-news/
-  - type: PostmanCollection
-    url: collections/worldnewsapi.postman_collection.json
-  - type: OpenCollection
-    url: collections/worldnewsapi.opencollection.json
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/get-geo-coordinates/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/top-news/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/extract-news/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/extract-news-links/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/retrieve-news/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/search-news-sources/
+  - type: Overlay
+    url: overlays/worldnewsapi-front-pages-api-overlay.yaml
   - type: Documentation
     url: https://worldnewsapi.com/docs/newspaper-front-pages/
+  - type: APIReference
+    url: https://worldnewsapi.com/docs/newspaper-front-pages/
+  - type: PostmanCollection
+    url: collections/worldnewsapi-front-pages-api.postman_collection.json
+  - type: OpenCollection
+    url: collections/worldnewsapi-front-pages-api.opencollection.json
+  - type: MCPServer
+    url: mcp/worldnewsapi-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/worldnewsapi-tool-crosswalk.yml
 - aid: worldnewsapi:worldnewsapi-geo-coordinates-api
   name: World News API Geo Coordinates API
   description: Resolve a place name to latitude/longitude for local news search.
-  humanURL: https://worldnewsapi.com/docs/search-news/
+  humanURL: https://worldnewsapi.com/docs/get-geo-coordinates/
   baseURL: https://api.worldnewsapi.com
   tags:
   - Geo Coordinates
   properties:
   - type: OpenAPI
     url: openapi/worldnewsapi-geo-coordinates-api-openapi.yml
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/search-news/
-  - type: APIReference
-    url: https://worldnewsapi.com/docs/search-news/
-  - type: PostmanCollection
-    url: collections/worldnewsapi.postman_collection.json
-  - type: OpenCollection
-    url: collections/worldnewsapi.opencollection.json
+  - type: Overlay
+    url: overlays/worldnewsapi-geo-coordinates-api-overlay.yaml
   - type: Documentation
     url: https://worldnewsapi.com/docs/get-geo-coordinates/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/top-news/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/extract-news/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/extract-news-links/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/retrieve-news/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/search-news-sources/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/newspaper-front-pages/
+  - type: APIReference
+    url: https://worldnewsapi.com/docs/get-geo-coordinates/
+  - type: PostmanCollection
+    url: collections/worldnewsapi-geo-coordinates-api.postman_collection.json
+  - type: OpenCollection
+    url: collections/worldnewsapi-geo-coordinates-api.opencollection.json
+  - type: MCPServer
+    url: mcp/worldnewsapi-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/worldnewsapi-tool-crosswalk.yml
 - aid: worldnewsapi:worldnewsapi-news-sources-api
   name: World News API News Sources API
   description: Discover and inspect available news sources.
-  humanURL: https://worldnewsapi.com/docs/search-news/
+  humanURL: https://worldnewsapi.com/docs/search-news-sources/
   baseURL: https://api.worldnewsapi.com
   tags:
   - News Sources
   properties:
   - type: OpenAPI
     url: openapi/worldnewsapi-news-sources-api-openapi.yml
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/search-news/
-  - type: APIReference
-    url: https://worldnewsapi.com/docs/search-news/
-  - type: PostmanCollection
-    url: collections/worldnewsapi.postman_collection.json
-  - type: OpenCollection
-    url: collections/worldnewsapi.opencollection.json
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/get-geo-coordinates/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/top-news/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/extract-news/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/extract-news-links/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/retrieve-news/
+  - type: Overlay
+    url: overlays/worldnewsapi-news-sources-api-overlay.yaml
   - type: Documentation
     url: https://worldnewsapi.com/docs/search-news-sources/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/newspaper-front-pages/
+  - type: APIReference
+    url: https://worldnewsapi.com/docs/search-news-sources/
+  - type: PostmanCollection
+    url: collections/worldnewsapi-news-sources-api.postman_collection.json
+  - type: OpenCollection
+    url: collections/worldnewsapi-news-sources-api.opencollection.json
+  - type: MCPServer
+    url: mcp/worldnewsapi-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/worldnewsapi-tool-crosswalk.yml
 - aid: worldnewsapi:worldnewsapi-retrieve-news-api
   name: World News API Retrieve News API
   description: Retrieve full article records by id.
-  humanURL: https://worldnewsapi.com/docs/search-news/
+  humanURL: https://worldnewsapi.com/docs/retrieve-news/
   baseURL: https://api.worldnewsapi.com
   tags:
   - Retrieve News
   properties:
   - type: OpenAPI
     url: openapi/worldnewsapi-retrieve-news-api-openapi.yml
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/search-news/
-  - type: APIReference
-    url: https://worldnewsapi.com/docs/search-news/
-  - type: PostmanCollection
-    url: collections/worldnewsapi.postman_collection.json
-  - type: OpenCollection
-    url: collections/worldnewsapi.opencollection.json
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/get-geo-coordinates/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/top-news/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/extract-news/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/extract-news-links/
+  - type: Overlay
+    url: overlays/worldnewsapi-retrieve-news-api-overlay.yaml
   - type: Documentation
     url: https://worldnewsapi.com/docs/retrieve-news/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/search-news-sources/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/newspaper-front-pages/
+  - type: APIReference
+    url: https://worldnewsapi.com/docs/retrieve-news/
+  - type: PostmanCollection
+    url: collections/worldnewsapi-retrieve-news-api.postman_collection.json
+  - type: OpenCollection
+    url: collections/worldnewsapi-retrieve-news-api.opencollection.json
+  - type: MCPServer
+    url: mcp/worldnewsapi-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/worldnewsapi-tool-crosswalk.yml
 - aid: worldnewsapi:worldnewsapi-search-news-api
   name: World News API Search News API
   description: Full-text, semantic, and geo/local news search.
@@ -211,75 +180,143 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/worldnewsapi-search-news-api-openapi.yml
+  - type: Overlay
+    url: overlays/worldnewsapi-search-news-api-overlay.yaml
   - type: Documentation
     url: https://worldnewsapi.com/docs/search-news/
   - type: APIReference
     url: https://worldnewsapi.com/docs/search-news/
   - type: PostmanCollection
-    url: collections/worldnewsapi.postman_collection.json
+    url: collections/worldnewsapi-search-news-api.postman_collection.json
   - type: OpenCollection
-    url: collections/worldnewsapi.opencollection.json
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/get-geo-coordinates/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/top-news/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/extract-news/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/extract-news-links/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/retrieve-news/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/search-news-sources/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/newspaper-front-pages/
+    url: collections/worldnewsapi-search-news-api.opencollection.json
+  - type: MCPServer
+    url: mcp/worldnewsapi-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/worldnewsapi-tool-crosswalk.yml
 - aid: worldnewsapi:worldnewsapi-top-news-api
   name: World News API Top News API
   description: Country-level top news clustered by coverage.
-  humanURL: https://worldnewsapi.com/docs/search-news/
+  humanURL: https://worldnewsapi.com/docs/top-news/
   baseURL: https://api.worldnewsapi.com
   tags:
   - Top News
   properties:
   - type: OpenAPI
     url: openapi/worldnewsapi-top-news-api-openapi.yml
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/search-news/
-  - type: APIReference
-    url: https://worldnewsapi.com/docs/search-news/
-  - type: PostmanCollection
-    url: collections/worldnewsapi.postman_collection.json
-  - type: OpenCollection
-    url: collections/worldnewsapi.opencollection.json
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/get-geo-coordinates/
+  - type: Overlay
+    url: overlays/worldnewsapi-top-news-api-overlay.yaml
   - type: Documentation
     url: https://worldnewsapi.com/docs/top-news/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/extract-news/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/extract-news-links/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/retrieve-news/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/search-news-sources/
-  - type: Documentation
-    url: https://worldnewsapi.com/docs/newspaper-front-pages/
+  - type: APIReference
+    url: https://worldnewsapi.com/docs/top-news/
+  - type: PostmanCollection
+    url: collections/worldnewsapi-top-news-api.postman_collection.json
+  - type: OpenCollection
+    url: collections/worldnewsapi-top-news-api.opencollection.json
+  - type: MCPServer
+    url: mcp/worldnewsapi-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/worldnewsapi-tool-crosswalk.yml
 common:
+- type: OpenAPI
+  name: World News API OpenAPI 3.0.0 (provider-published, v2.2.0)
+  url: openapi/_original/worldnewsapi-openapi-original.json
 - type: AgenticAccess
   url: agentic-access/worldnewsapi-agentic-access.yml
 - type: Authentication
   url: authentication/worldnewsapi-authentication.yml
 - type: DomainSecurity
   url: security/worldnewsapi-domain-security.yml
+- type: Packages
+  url: packages/worldnewsapi-packages.yml
+- type: SDKs
+  url: packages/worldnewsapi-packages.yml
+- type: MCPServer
+  name: World News API MCP Server (local stdio)
+  url: mcp/worldnewsapi-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/worldnewsapi-tool-crosswalk.yml
+- type: LLMsTxt
+  url: llms/worldnewsapi-llms.txt
+- type: Conformance
+  url: conformance/worldnewsapi-conformance.yml
+- type: ErrorCatalog
+  url: errors/worldnewsapi-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/worldnewsapi-lifecycle.yml
+- type: StatusPage
+  url: https://status.worldnewsapi.com/
+- type: Deprecation
+  url: https://worldnewsapi.com/docs/api-changelog/
+- type: Conventions
+  url: conventions/worldnewsapi-conventions.yml
+- type: ChangeLog
+  name: World News API Changelog (artifact)
+  url: changelog/worldnewsapi-changelog.yml
+- type: DataModel
+  url: data-model/worldnewsapi-data-model.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Overlay
+  name: API Evangelist overlay - Search News API
+  url: overlays/worldnewsapi-search-news-api-overlay.yaml
+- type: Overlay
+  name: API Evangelist overlay - Top News API
+  url: overlays/worldnewsapi-top-news-api-overlay.yaml
+- type: Overlay
+  name: API Evangelist overlay - Extract News API
+  url: overlays/worldnewsapi-extract-news-api-overlay.yaml
+- type: Overlay
+  name: API Evangelist overlay - Retrieve News API
+  url: overlays/worldnewsapi-retrieve-news-api-overlay.yaml
+- type: Overlay
+  name: API Evangelist overlay - Front Pages API
+  url: overlays/worldnewsapi-front-pages-api-overlay.yaml
+- type: Overlay
+  name: API Evangelist overlay - News Sources API
+  url: overlays/worldnewsapi-news-sources-api-overlay.yaml
+- type: Overlay
+  name: API Evangelist overlay - Geo Coordinates API
+  url: overlays/worldnewsapi-geo-coordinates-api-overlay.yaml
 - type: GitHubOrganization
   url: https://github.com/ddsky
 - type: LinkedIn
   url: https://www.linkedin.com/company/world-news-api
 - type: Website
   url: https://worldnewsapi.com
+- type: DeveloperPortal
+  url: https://worldnewsapi.com/docs/
 - type: Documentation
   url: https://worldnewsapi.com/docs/
+- type: APIReference
+  url: https://worldnewsapi.com/docs/search-news/
+- type: GettingStarted
+  url: https://worldnewsapi.com/docs/quick-start-tutorial/
+- type: Console
+  name: Newsroom - free browser-based API explorer
+  url: https://worldnewsapi.com/newsroom/
+- type: Postman
+  name: World News API public Postman collection
+  url: https://www.postman.com/spoonacular-api/workspace/world-news-api/collection/7431899-9288f331-3732-4328-baad-1d1e53001875
+- type: Support
+  name: World News API Discord
+  url: https://discord.gg/GrmNknKHYD
+- type: Pricing
+  url: https://worldnewsapi.com/pricing/
+- type: SignUp
+  url: https://worldnewsapi.com/console/
+- type: TermsOfService
+  url: https://worldnewsapi.com/terms/
+- type: PrivacyPolicy
+  name: Terms and Privacy Policy (single combined page)
+  url: https://worldnewsapi.com/terms/
+- type: SourceCode
+  name: World News API client libraries (all languages)
+  url: https://github.com/ddsky/world-news-api-clients
+- type: SourceCode
+  name: World News API MCP server
+  url: https://github.com/ddsky/world-news-api-mcp
 - type: Plans
   url: plans/worldnewsapi-plans-pricing.yml
 - type: RateLimits
@@ -289,3 +326,8 @@ common:
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-08-13'
+  status: enriched
+  artifacts_added: 25
+  pass: local-v1
