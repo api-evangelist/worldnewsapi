@@ -1,0 +1,68 @@
+generated: '2026-08-13'
+method: probed
+source: live GET of /.well-known/* on the API host and the website host
+result: none
+description: >-
+  No /.well-known/ discovery document is served by World News API. The API host
+  (api.worldnewsapi.com) returns a genuine HTTP 404 from Apache Tomcat for every
+  probed path. The website host (worldnewsapi.com) is a static site behind
+  Cloudflare that answers HTTP 200 with the 61,108-byte homepage HTML for every
+  unknown path - a soft 404 - so none of those 200s is a document. No
+  WellKnown or SecurityTxt pointer is emitted for this provider.
+hosts:
+- host: https://api.worldnewsapi.com
+  behavior: hard-404
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://worldnewsapi.com
+  behavior: soft-404
+  note: >-
+    Every path below returned 200 with content-type text/html and a body byte
+    -identical to the site homepage (title "World News API", 61,108 bytes).
+    Treated as a miss, not a hit.
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    content_type: text/html
+    document: false
+  - path: /.well-known/openid-configuration
+    status: 200
+    content_type: text/html
+    document: false
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: text/html
+    document: false
+  - path: /.well-known/api-catalog
+    status: 200
+    content_type: text/html
+    document: false
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    content_type: text/html
+    document: false
+  - path: /.well-known/agent-card.json
+    status: 200
+    content_type: text/html
+    document: false
+  - path: /.well-known/agent.json
+    status: 200
+    content_type: text/html
+    document: false
+  - path: /llms.txt
+    status: 200
+    content_type: text/html
+    document: false

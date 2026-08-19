@@ -1,0 +1,135 @@
+generated: '2026-08-13'
+method: derived
+source: openapi/_original/worldnewsapi-openapi-original.json
+description: >-
+  Entity graph for the World News API, derived from the response schemas of the
+  provider's published OpenAPI 3 document. The specification declares zero
+  reusable components.schemas - every response body is an inline anonymous
+  object - so the entities below are named by API Evangelist from the shape and
+  the field names, and the field lists are exactly what the contract declares.
+  Relationships are containment and id-reference links only; there are no $ref
+  edges in the document to follow.
+schema_reuse:
+  components_schemas: 0
+  note: >-
+    All nine operations inline their response schemas. NewsArticle is declared
+    twice with slightly different field sets (search-news carries video,
+    retrieve-news does not) and ExtractedArticle is a third, wider variant. A
+    consumer cannot bind one type across the surface.
+entities:
+- name: NewsArticle
+  description: An indexed news article as returned by search and retrieval.
+  identifier:
+    field: id
+    type: integer
+    prefixed: false
+  fields: [id, title, text, summary, url, image, video, authors, publish_date, language,
+    source_country, category, sentiment]
+  returned_by: [searchNews, topNews, retrieveNewsArticlesByIds]
+  variants:
+  - operation: searchNews
+    extra_fields: [video]
+  - operation: retrieveNewsArticlesByIds
+    missing_fields: [video]
+- name: NewsSearchResult
+  description: The paged envelope around a news search.
+  fields: [offset, number, available, news]
+  returned_by: [searchNews]
+- name: TopNewsCluster
+  description: A cluster of articles covering the same story, grouped for a country and language on a date.
+  fields: [news]
+  returned_by: [topNews]
+  note: >-
+    The top-news response is {top_news: [{news: [...]}], language, country}. The
+    cluster object itself has no id, title, or size field, so clusters cannot be
+    referenced or deduplicated across calls.
+- name: ExtractedArticle
+  description: An article extracted from an arbitrary URL, richer than the indexed NewsArticle.
+  identifier: null
+  fields: [title, text, url, image, images, video, videos, publish_date, author, authors, language]
+  returned_by: [extractNews]
+  note: >-
+    Carries no id - extraction is stateless and the result is not written into
+    the index, so an extracted article cannot be retrieved again by id. The
+    scalar author, image and video fields were announced as deprecated on
+    2024-06-07 with removal by 2024-12-31 but are still present in the contract.
+- name: ArticleImage
+  description: An image attached to an extracted article.
+  fields: [url, title, width, height]
+  returned_by: [extractNews]
+- name: ArticleVideo
+  description: A video attached to an extracted article.
+  fields: [url, title, summary, thumbnail, duration]
+  returned_by: [extractNews]
+- name: NewsSource
+  description: A publication monitored by World News API.
+  identifier:
+    field: name
+    type: string
+    prefixed: false
+  fields: [name, url, language]
+  returned_by: [searchNewsSources]
+- name: FrontPage
+  description: A scanned newspaper front page for a publication on a date.
+  identifier:
+    composite: [name, date]
+  fields: [name, date, country, image, language]
+  returned_by: [retrieveNewspaperFrontPage]
+- name: GeoCoordinate
+  description: A resolved location used to build the location-filter value.
+  fields: [latitude, longitude, city]
+  returned_by: [getGeoCoordinates]
+- name: NewsLink
+  description: A news URL discovered on a website.
+  fields: [news_links]
+  returned_by: [extractNewsLinks]
+  note: news_links is declared as a bare array with no item schema in the specification.
+relationships:
+- from: NewsSearchResult
+  to: NewsArticle
+  kind: has_many
+  via: news
+- from: TopNewsCluster
+  to: NewsArticle
+  kind: has_many
+  via: news
+- from: NewsArticle
+  to: NewsSource
+  kind: belongs_to
+  via: url
+  confidence: low
+  note: >-
+    There is no source id on NewsArticle. The link between an article and a
+    monitored source is only expressible by matching the article url host to the
+    source url, or by passing news-sources as a search filter. This is the
+    weakest edge in the model and the one an agent is most likely to get wrong.
+- from: ExtractedArticle
+  to: ArticleImage
+  kind: has_many
+  via: images
+- from: ExtractedArticle
+  to: ArticleVideo
+  kind: has_many
+  via: videos
+- from: FrontPage
+  to: NewsSource
+  kind: belongs_to
+  via: name
+  confidence: medium
+  note: FrontPage.name and NewsSource.name are both publication identifiers (e.g. "herald-sun") but the contract does not state they share a namespace.
+- from: GeoCoordinate
+  to: NewsArticle
+  kind: filters
+  via: location-filter
+  note: >-
+    Not a data relationship but the documented two-call workflow - resolve a
+    place with getGeoCoordinates, then pass "latitude,longitude,radius_km" to
+    searchNews.
+gaps:
+- No components.schemas; every type is inline and anonymous.
+- NewsArticle ids are bare integers with no prefix or namespace, so an id carries no type information.
+- Clusters, sources and front pages have no stable machine identifier.
+- news_links is an untyped array.
+sources:
+- https://raw.githubusercontent.com/ddsky/world-news-api-clients/main/world-news-api-openapi-3.json
+- https://worldnewsapi.com/docs/

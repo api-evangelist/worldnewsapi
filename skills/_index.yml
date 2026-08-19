@@ -1,0 +1,41 @@
+generated: '2026-08-13'
+method: generated
+source: openapi/_original/worldnewsapi-openapi-original.json + https://worldnewsapi.com/docs/
+description: >-
+  Packaged agent skills for the World News API. Every step is grounded in an
+  operationId that exists verbatim in the provider-published OpenAPI 3 document,
+  and every cost, header and error rule is taken from the provider's own quota
+  and authentication documentation. The provider publishes no AGENTS.md or skill
+  files of its own.
+skills:
+- file: worldnewsapi-local-news-search.md
+  name: Local news search around a place
+  description: Resolve a place name to coordinates, then search news within a 1-100 km radius of that point.
+  api: openapi/_original/worldnewsapi-openapi-original.json
+  operations: [getGeoCoordinates, searchNews]
+  mcp_tools: [get_geo_coordinates, search_news]
+- file: worldnewsapi-entity-media-monitoring.md
+  name: Monitor an organization or person across the news
+  description: Track coverage of a company, person or topic over a window with semantic entity matching and sentiment filtering, then batch-retrieve full records.
+  api: openapi/_original/worldnewsapi-openapi-original.json
+  operations: [searchNews, retrieveNewsArticlesByIds, searchNewsSources]
+  mcp_tools: [search_news, retrieve_news_articles, search_news_sources]
+- file: worldnewsapi-country-briefing.md
+  name: Build a daily country news briefing
+  description: Assemble clustered top headlines for a country and date plus the newspaper front pages that ran that morning.
+  api: openapi/_original/worldnewsapi-openapi-original.json
+  operations: [topNews, retrieveNewspaperFrontPage, retrieveNewsArticlesByIds]
+  mcp_tools: [get_top_news, retrieve_newspaper_front_page, retrieve_news_articles]
+- file: worldnewsapi-article-extraction.md
+  name: Extract articles and links from any news website
+  description: Turn an arbitrary news URL into a structured article, or crawl a news homepage for its current article links.
+  api: openapi/_original/worldnewsapi-openapi-original.json
+  operations: [extractNewsLinks, extractNews, newsWebsiteToRSSFeed]
+  mcp_tools: [extract_news_links, extract_news]
+shared_rules:
+  authentication: x-api-key header (preferred) or api-key query parameter; no OAuth.
+  metering: 1 point per request plus 0.01 points per result returned; read X-API-Quota-Left before each batch.
+  quota_exhausted: HTTP 402 - stop, do not retry; Free plan resets at midnight UTC.
+  throttled: HTTP 429 - exponential backoff; no Retry-After header is sent.
+  error_bodies: none - the status code is the entire error contract.
+  idempotency: not applicable - every published operation is a GET.

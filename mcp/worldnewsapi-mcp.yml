@@ -1,0 +1,111 @@
+generated: '2026-08-13'
+method: searched
+status: published
+source: https://worldnewsapi.com/docs/setup-news-mcp/
+docs: https://worldnewsapi.com/docs/setup-news-mcp/
+repository: https://github.com/ddsky/world-news-api-mcp
+description: >-
+  World News API publishes a first-party MCP server that exposes eight news
+  tools over stdio. It is a locally installed npm package - there is no hosted
+  remote MCP endpoint - so a human installs and runs it on a machine before any
+  agent can reach the API through it. The server proxies the same REST
+  operations documented in the provider's OpenAPI 3 document and authenticates
+  with the same API key, supplied through the WORLD_NEWS_API_KEY environment
+  variable rather than a per-request header.
+deployment:
+  mode: local-stdio
+  install: npm install -g world-news-api-mcp
+  package: https://www.npmjs.com/package/world-news-api-mcp
+  auth: api-key
+  verified: probed
+  note: >-
+    Verified on 2026-08-13 by running `npx -y world-news-api-mcp`, completing
+    the MCP initialize handshake and issuing tools/list over stdio. The server
+    answered with serverInfo {name world-news-api-mcp, version 1.0.0},
+    protocolVersion 2024-11-05, and eight tools with full inputSchemas. The
+    raw response is saved verbatim at mcp/worldnewsapi-mcp-tools.json. No
+    remote endpoint is published by the provider and none was guessed.
+server:
+  name: world-news-api
+  transport: stdio
+  command: world-news-api-mcp
+  version: 1.0.0
+  protocol_version: '2024-11-05'
+  runtime: node >=18
+  license: ISC
+  sdk: '@modelcontextprotocol/sdk ^1.17.1'
+  capabilities:
+    tools: true
+    resources: false
+    prompts: false
+authentication:
+  type: api-key
+  mechanism: environment-variable
+  variable: WORLD_NEWS_API_KEY
+  obtain: https://worldnewsapi.com/console/
+client_config:
+  claude_desktop: |
+    {
+      "mcpServers": {
+        "world-news-api": {
+          "command": "world-news-api-mcp",
+          "env": {
+            "WORLD_NEWS_API_KEY": "your_api_key_here"
+          }
+        }
+      }
+    }
+tools:
+- name: search_news
+  description: Search and filter news by text, date, location, category, language, and more
+  required: []
+  parameters: [text, source-country, language, min-sentiment, max-sentiment, earliest-publish-date,
+    latest-publish-date, news-sources, authors, categories, entities, location-filter,
+    sort, sort-direction, offset, number]
+  source_operation: openapi/_original/worldnewsapi-openapi-original.json#searchNews
+- name: get_top_news
+  description: Get the top news from a country in a language for a specific date
+  required: [source-country, language]
+  parameters: [source-country, language, date, headlines-only]
+  source_operation: openapi/_original/worldnewsapi-openapi-original.json#topNews
+- name: retrieve_newspaper_front_page
+  description: Get the front pages of newspapers from around the world
+  required: []
+  parameters: [source-country, source-name, date]
+  source_operation: openapi/_original/worldnewsapi-openapi-original.json#retrieveNewspaperFrontPage
+- name: retrieve_news_articles
+  description: Retrieve information about one or more news articles by their IDs
+  required: [ids]
+  parameters: [ids]
+  source_operation: openapi/_original/worldnewsapi-openapi-original.json#retrieveNewsArticlesByIds
+- name: extract_news
+  description: Extract a news article from a website to a well-structured JSON object
+  required: [url]
+  parameters: [url, analyze]
+  source_operation: openapi/_original/worldnewsapi-openapi-original.json#extractNews
+- name: extract_news_links
+  description: Extract news links from a news website
+  required: [url]
+  parameters: [url, analyze]
+  source_operation: openapi/_original/worldnewsapi-openapi-original.json#extractNewsLinks
+- name: search_news_sources
+  description: Search whether a news source is being monitored by the World News API
+  required: [name]
+  parameters: [name]
+  source_operation: openapi/_original/worldnewsapi-openapi-original.json#searchNewsSources
+- name: get_geo_coordinates
+  description: Retrieve the latitude and longitude of a location name for use in location-filter
+  required: [location]
+  parameters: [location]
+  source_operation: openapi/_original/worldnewsapi-openapi-original.json#getGeoCoordinates
+tools_manifest: mcp/worldnewsapi-mcp-tools.json
+crosswalk: mcp/worldnewsapi-tool-crosswalk.yml
+x-evidence:
+  fetched: '2026-08-13'
+  probe: stdio initialize + tools/list via npx -y world-news-api-mcp
+  tools_returned: 8
+  server_version: 1.0.0
+sources:
+- https://worldnewsapi.com/docs/setup-news-mcp/
+- https://github.com/ddsky/world-news-api-mcp
+- https://www.npmjs.com/package/world-news-api-mcp

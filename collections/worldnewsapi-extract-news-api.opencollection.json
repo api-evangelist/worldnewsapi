@@ -1,0 +1,76 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "World News Extract News API",
+    "version": "1.2"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "api-key",
+      "value": "{{api-key}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Extract News",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Extract news",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.worldnewsapi.com/extract-news",
+            "params": [
+              {
+                "name": "url",
+                "value": "",
+                "type": "query",
+                "description": "The URL of the news article to extract."
+              },
+              {
+                "name": "analyze",
+                "value": "",
+                "type": "query",
+                "description": "Whether to analyze the extracted news (entities, sentiment)."
+              }
+            ]
+          },
+          "docs": "Extract a news article's title, text, images, publish date, and authors from a given URL, with optional named-entity analysis."
+        },
+        {
+          "info": {
+            "name": "Extract news links",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.worldnewsapi.com/extract-news-links",
+            "params": [
+              {
+                "name": "url",
+                "value": "",
+                "type": "query",
+                "description": "The URL of the news website page from which to extract links."
+              },
+              {
+                "name": "analyze",
+                "value": "",
+                "type": "query",
+                "description": "Whether to analyze the extracted links."
+              }
+            ]
+          },
+          "docs": "Extract news links (article URLs) from a news website's page."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

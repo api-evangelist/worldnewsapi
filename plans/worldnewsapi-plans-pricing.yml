@@ -1,11 +1,18 @@
 specification: API Commons Plans
 specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+generated: '2026-08-13'
+method: searched
+source: https://worldnewsapi.com/pricing/
 provider: World News API
 providerId: worldnewsapi
 created: '2026-07-11'
-modified: '2026-07-11'
-reconciled: false
+modified: '2026-08-13'
+reconciled: true
+reconciledOn: '2026-08-13'
+plan_count: 4
+currency: USD
+billing_period: month
 tags:
 - News
 - News Search
@@ -22,11 +29,30 @@ description: >-
   backlink to worldnewsapi.com); paid tiers remove the backlink requirement and
   add uptime guarantees and support.
 notes: >-
-  Prices and allowances captured from the public pricing page on 2026-07-11 and
-  not independently reconciled - verify current numbers at
-  https://worldnewsapi.com/pricing/. Per-endpoint point costs vary by endpoint
-  and parameters and are not fully published; treat the point allowances as the
-  primary quota.
+  Re-read verbatim from https://worldnewsapi.com/pricing/ on 2026-08-13; every
+  price, daily point allowance, overage rate, request-rate and concurrency
+  figure below was confirmed unchanged from the 2026-07-11 capture. All four
+  tiers are self-serve and published - there is no "contact us" enterprise tier,
+  though the pricing FAQ says custom payment terms can be negotiated for Editor
+  and for custom plans. Per-endpoint point costs vary by endpoint and parameters
+  and are stated on each endpoint's documentation page rather than on the
+  pricing page; treat the daily point allowance as the primary quota.
+uptime_targets:
+  Free: none
+  Reporter: '99%'
+  Journalist: '99.9%'
+  Editor: '99.99%'
+  note: >-
+    Advertised as per-tier plan features. The FAQ on the same page separately
+    claims "We guarantee 99.9% uptime for all plans", which contradicts the tier
+    table; both statements are recorded rather than resolved.
+history_limits:
+  Free: 1 month
+  paid: back to 2022-01-01
+payment:
+  processor: Stripe
+  methods: [credit card]
+  card_required_for_free_tier: false
 sources:
 - https://worldnewsapi.com/pricing/
 - https://worldnewsapi.com/docs/

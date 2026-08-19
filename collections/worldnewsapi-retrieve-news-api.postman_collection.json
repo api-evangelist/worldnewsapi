@@ -1,0 +1,229 @@
+{
+  "item": [
+    {
+      "id": "de184bfa-e7ae-4471-ab94-f1cee9051dff",
+      "name": "Retrieve News",
+      "description": {
+        "content": "Retrieve full article records by id.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6ef71195-dd30-450f-bcc3-1ecccedf947b",
+          "name": "Retrieve news by id",
+          "request": {
+            "name": "Retrieve news by id",
+            "description": {
+              "content": "Retrieve full information about one or more news articles by their ids, obtained from the Search News or Top News endpoints.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "retrieve-news"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "ids",
+                  "value": "<string>",
+                  "description": "(Required) A comma-separated list of news ids to retrieve."
+                },
+                {
+                  "disabled": false,
+                  "key": "analyze",
+                  "value": "<boolean>",
+                  "description": "Whether to analyze the news (extract entities, etc.)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "413fa9cf-c939-4a45-84ec-439dd9e7fbdd",
+              "name": "The requested news articles.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "retrieve-news"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "analyze",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "api-key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "89ec03a6-2f72-4965-b444-1c02a0311e8d",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "retrieve-news"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "analyze",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "api-key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4a27636d-49c5-41f8-9ba2-d886750e178a",
+              "name": "Daily point quota exceeded for the current plan.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "retrieve-news"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "analyze",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "api-key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Payment Required",
+              "code": 402,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.worldnewsapi.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "query"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "9f5f24b5-3c47-4104-a593-db92f2cfc810",
+    "name": "World News Extract News Retrieve News API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "World News API provides real-time and historical news from thousands of sources across 210+ countries and 86+ languages. It supports full-text and semantic news search, geo-targeted local news search via a radius filter, article content extraction from arbitrary URLs, country-level top news clustering, newspaper front-page images, and news-source discovery. All requests are authenticated with an API key passed either as the `api-key` query parameter or the `x-api-key` HTTP header. Each endpoint consumes a number of points (credits) that count against your plan's daily allowance.\n\nContact Support:\n Name: World News API",
+      "type": "text/plain"
+    }
+  }
+}

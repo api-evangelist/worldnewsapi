@@ -1,0 +1,114 @@
+generated: '2026-08-13'
+method: derived
+source: mcp/worldnewsapi-mcp-tools.json + openapi/_original/worldnewsapi-openapi-original.json
+description: >-
+  Binds each World News API MCP tool to the REST operation it wraps. Both sides
+  were read live: the tool list came from an unauthenticated stdio tools/list
+  against world-news-api-mcp 1.0.0, and the operations from the provider's own
+  OpenAPI 3 document published at
+  https://raw.githubusercontent.com/ddsky/world-news-api-clients/main/world-news-api-openapi-3.json.
+  The mapping is one-to-one and lossless in the REST direction: every MCP tool
+  is a thin proxy over exactly one operation, and the tool inputSchema property
+  names are the REST query parameter names verbatim (hyphenated, e.g.
+  source-country, location-filter, headlines-only), so confidence is high on
+  every row. One REST operation has no tool.
+surfaces:
+  openapi:
+    file: openapi/_original/worldnewsapi-openapi-original.json
+    version: 3.0.0
+    info_version: 2.2.0
+    servers: [https://api.worldnewsapi.com]
+    operations: 9
+    gated: false
+  mcp:
+    transport: stdio
+    package: world-news-api-mcp
+    version: 1.0.0
+    tools: 8
+    gated: false
+    note: tools/list answered anonymously; an API key is only needed to invoke a tool.
+  graphql: null
+crosswalk:
+- tool: search_news
+  category: search
+  rest: [searchNews]
+  path: GET /search-news
+  binding: rest
+  confidence: high
+  note: >-
+    The tool exposes 16 of the 17 spec parameters. The spec parameter
+    text-match-indexes (added in the 2025-03-20 release, restricts matching to
+    title vs content) is absent from the tool, so an agent cannot scope a text
+    match through MCP.
+- tool: get_top_news
+  category: headlines
+  rest: [topNews]
+  path: GET /top-news
+  binding: rest
+  confidence: high
+  note: >-
+    The tool requires source-country and language, matching the spec. The
+    max-news-per-cluster parameter announced in the 2025-08-19 changelog is in
+    neither the tool schema nor the published OpenAPI.
+- tool: retrieve_newspaper_front_page
+  category: front-pages
+  rest: [retrieveNewspaperFrontPage]
+  path: GET /retrieve-front-page
+  binding: rest
+  confidence: high
+- tool: retrieve_news_articles
+  category: retrieval
+  rest: [retrieveNewsArticlesByIds]
+  path: GET /retrieve-news
+  binding: rest
+  confidence: high
+- tool: extract_news
+  category: extraction
+  rest: [extractNews]
+  path: GET /extract-news
+  binding: rest
+  confidence: high
+- tool: extract_news_links
+  category: extraction
+  rest: [extractNewsLinks]
+  path: GET /extract-news-links
+  binding: rest
+  confidence: high
+- tool: search_news_sources
+  category: discovery
+  rest: [searchNewsSources]
+  path: GET /search-news-sources
+  binding: rest
+  confidence: high
+- tool: get_geo_coordinates
+  category: geo
+  rest: [getGeoCoordinates]
+  path: GET /geo-coordinates
+  binding: rest
+  confidence: high
+  note: >-
+    Paired with search_news location-filter - resolve a place name here, then
+    pass "latitude,longitude,radius_km" to search_news.
+mcp_only: []
+rest_only:
+- operation: newsWebsiteToRSSFeed
+  path: GET /feed.rss
+  capability: feed-generation
+  reason: >-
+    Turns an arbitrary news website into an RSS 2.0 feed. It returns XML rather
+    than JSON, which is why it is not wrapped as an MCP tool; an agent must call
+    the REST endpoint directly.
+undocumented_surface:
+- endpoint: suggest-news-source
+  reason: >-
+    Documented at https://worldnewsapi.com/docs/suggest-news-source/ (paid plans
+    only) but absent from both the published OpenAPI and the MCP tool list, so
+    it is neither mapped nor counted below.
+coverage:
+  tools_named: 8
+  tools_bound: 8
+  mcp_only: 0
+  rest_operations: 9
+  rest_operations_with_tool: 8
+  rest_only: 1
+  parameter_gaps: [searchNews.text-match-indexes]

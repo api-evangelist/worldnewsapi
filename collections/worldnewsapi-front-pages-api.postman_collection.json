@@ -1,0 +1,201 @@
+{
+  "item": [
+    {
+      "id": "d2442f74-a18f-4490-b88f-efc0690f4b1a",
+      "name": "Front Pages",
+      "description": {
+        "content": "Retrieve newspaper front-page images by country and date.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c21ca7ef-e6d2-4bf3-94f2-05609e1d69df",
+          "name": "Retrieve newspaper front page",
+          "request": {
+            "name": "Retrieve newspaper front page",
+            "description": {
+              "content": "Retrieve a newspaper's front-page image for a country and date.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "retrieve-front-page"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "source-country",
+                  "value": "<string>",
+                  "description": "The ISO 3166 country code of the newspaper (e.g. \"us\")."
+                },
+                {
+                  "disabled": false,
+                  "key": "source-name",
+                  "value": "<string>",
+                  "description": "The identifier of the newspaper (e.g. \"the_new_york_times\")."
+                },
+                {
+                  "disabled": false,
+                  "key": "date",
+                  "value": "<string>",
+                  "description": "The date of the front page (yyyy-MM-dd)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "15852fb4-e6ad-4e38-8132-03998f5156d3",
+              "name": "The requested newspaper front page.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "retrieve-front-page"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "source-country",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "source-name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "api-key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3f2166f0-6c64-4e6c-ae78-8eef74f7cc24",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "retrieve-front-page"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "source-country",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "source-name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "api-key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.worldnewsapi.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "query"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "9d1e6653-bb36-4138-ad6f-11cc51184e03",
+    "name": "World News Extract News Front Pages API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "World News API provides real-time and historical news from thousands of sources across 210+ countries and 86+ languages. It supports full-text and semantic news search, geo-targeted local news search via a radius filter, article content extraction from arbitrary URLs, country-level top news clustering, newspaper front-page images, and news-source discovery. All requests are authenticated with an API key passed either as the `api-key` query parameter or the `x-api-key` HTTP header. Each endpoint consumes a number of points (credits) that count against your plan's daily allowance.\n\nContact Support:\n Name: World News API",
+      "type": "text/plain"
+    }
+  }
+}

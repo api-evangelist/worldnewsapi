@@ -1,0 +1,51 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "World News Extract News Retrieve News API",
+    "version": "1.2"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "api-key",
+      "value": "{{api-key}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Retrieve News",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve news by id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.worldnewsapi.com/retrieve-news",
+            "params": [
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of news ids to retrieve."
+              },
+              {
+                "name": "analyze",
+                "value": "",
+                "type": "query",
+                "description": "Whether to analyze the news (extract entities, etc.)."
+              }
+            ]
+          },
+          "docs": "Retrieve full information about one or more news articles by their ids, obtained from the Search News or Top News endpoints."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

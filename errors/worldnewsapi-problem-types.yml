@@ -1,0 +1,90 @@
+generated: '2026-08-13'
+method: derived
+source: openapi/_original/worldnewsapi-openapi-original.json
+docs: https://worldnewsapi.com/docs/quotas-and-rate-limiting/
+format: none
+format_note: >-
+  World News API does not use RFC 9457 problem+json. Every one of the nine
+  operations in the provider's OpenAPI declares the same six error statuses -
+  401, 402, 403, 404, 406, 429 - each with a bare reason-phrase description and
+  no response body schema and no content type at all. There is therefore no
+  machine-readable error envelope to bind an agent to: the status code is the
+  entire error contract. The remediation text below is taken from the
+  provider's authentication and quota documentation, not invented.
+envelope:
+  documented: false
+  media_type: null
+  note: >-
+    The OpenAPI declares no content for any 4xx response. Clients must branch on
+    the HTTP status code alone.
+problems:
+- status: 401
+  title: Unauthorized
+  meaning: The API key is missing or invalid.
+  remediation: >-
+    Supply the key as the api-key query parameter or the x-api-key request
+    header. Get or rotate a key at https://worldnewsapi.com/console/.
+  agent_action: fail-do-not-retry
+  source_operations: [searchNews, topNews, retrieveNewspaperFrontPage, retrieveNewsArticlesByIds,
+    extractNews, extractNewsLinks, searchNewsSources, newsWebsiteToRSSFeed, getGeoCoordinates]
+- status: 402
+  title: Payment Required
+  meaning: >-
+    The daily point (credit) allowance for the plan has been consumed. On the
+    Free plan no further calls succeed until the quota resets at midnight UTC;
+    on paid plans overage billing applies instead.
+  remediation: >-
+    Read X-API-Quota-Left on the previous successful response before retrying,
+    wait for the midnight-UTC reset, or upgrade the plan at
+    https://worldnewsapi.com/pricing/.
+  agent_action: stop-until-reset
+  docs: https://worldnewsapi.com/docs/quotas-and-rate-limiting/
+  source_operations: [searchNews, topNews, retrieveNewspaperFrontPage, retrieveNewsArticlesByIds,
+    extractNews, extractNewsLinks, searchNewsSources, newsWebsiteToRSSFeed, getGeoCoordinates]
+- status: 403
+  title: Forbidden
+  meaning: >-
+    The key is valid but the plan does not include the requested capability.
+    Front Pages and Suggest News Source are documented as paid-plan-only
+    features.
+  remediation: Upgrade the plan at https://worldnewsapi.com/pricing/.
+  agent_action: fail-do-not-retry
+  source_operations: [searchNews, topNews, retrieveNewspaperFrontPage, retrieveNewsArticlesByIds,
+    extractNews, extractNewsLinks, searchNewsSources, newsWebsiteToRSSFeed, getGeoCoordinates]
+- status: 404
+  title: Not Found
+  meaning: The requested resource does not exist - e.g. an unknown news id or a front page for a date/publication that is not held.
+  remediation: Verify the id, source-name, or date. Front pages are only available from 2024-07-09 onward.
+  agent_action: fail-do-not-retry
+  source_operations: [searchNews, topNews, retrieveNewspaperFrontPage, retrieveNewsArticlesByIds,
+    extractNews, extractNewsLinks, searchNewsSources, newsWebsiteToRSSFeed, getGeoCoordinates]
+- status: 406
+  title: Not Acceptable
+  meaning: The request could not be satisfied in the requested representation.
+  remediation: Request application/json (or application/xml for the RSS feed endpoint).
+  agent_action: fail-do-not-retry
+  source_operations: [searchNews, topNews, retrieveNewspaperFrontPage, retrieveNewsArticlesByIds,
+    extractNews, extractNewsLinks, searchNewsSources, newsWebsiteToRSSFeed, getGeoCoordinates]
+- status: 429
+  title: Too Many Requests
+  meaning: >-
+    The per-second request rate or the concurrent-request ceiling for the plan
+    was exceeded. Free is documented as 60 requests per minute and 1 concurrent
+    request; Reporter 2/s and 5 concurrent; Journalist 10/s and 10 concurrent;
+    Editor 20/s and 10 concurrent.
+  remediation: >-
+    Back off and retry. No Retry-After header is documented; use exponential
+    backoff and hold concurrency at or below the plan ceiling.
+  agent_action: retry-with-backoff
+  docs: https://worldnewsapi.com/docs/quotas-and-rate-limiting/
+  source_operations: [searchNews, topNews, retrieveNewspaperFrontPage, retrieveNewsArticlesByIds,
+    extractNews, extractNewsLinks, searchNewsSources, newsWebsiteToRSSFeed, getGeoCoordinates]
+gaps:
+- No 400 Bad Request is declared for any operation despite documented parameter constraints (text minimum 3 characters, number in [1,100], offset in [0,100000]).
+- No 5xx responses are declared anywhere in the specification.
+- No error response carries a schema, so error codes, messages, and machine-readable reasons are undiscoverable from the contract.
+- No Retry-After header is documented on 429.
+sources:
+- https://raw.githubusercontent.com/ddsky/world-news-api-clients/main/world-news-api-openapi-3.json
+- https://worldnewsapi.com/docs/quotas-and-rate-limiting/
+- https://worldnewsapi.com/docs/authentication/

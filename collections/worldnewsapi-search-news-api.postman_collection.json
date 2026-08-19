@@ -1,0 +1,491 @@
+{
+  "item": [
+    {
+      "id": "02430222-9877-4cf4-be58-885ca7624d7a",
+      "name": "Search News",
+      "description": {
+        "content": "Full-text, semantic, and geo/local news search.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "7ce3a46b-1d79-49d9-8e2c-771dc0479ae2",
+          "name": "Search news",
+          "request": {
+            "name": "Search news",
+            "description": {
+              "content": "Search and filter news by keyword, semantic entities, category, language, source country, publish-date range, and geographic location. The `location-filter` parameter enables local news search by drawing a radius (1-100 km) around a latitude/longitude point, so consumers can find news mentioning or published near a specific place.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "search-news"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "text",
+                  "value": "<string>",
+                  "description": "The keyword(s) to search for in the news article text."
+                },
+                {
+                  "disabled": false,
+                  "key": "source-country",
+                  "value": "<string>",
+                  "description": "The ISO 3166 country code of the news source (e.g. \"us\", \"gb\")."
+                },
+                {
+                  "disabled": false,
+                  "key": "language",
+                  "value": "<string>",
+                  "description": "The ISO 6391 language code of the news (e.g. \"en\")."
+                },
+                {
+                  "disabled": false,
+                  "key": "categories",
+                  "value": "<string>",
+                  "description": "A comma-separated list of categories to filter by (e.g. politics, sports, business, technology, entertainment, health, science, lifestyle, travel, culture, education, environment, other)."
+                },
+                {
+                  "disabled": false,
+                  "key": "entities",
+                  "value": "<string>",
+                  "description": "Semantic filter for specific people, organizations, or locations, e.g. \"ORG:Tesla,PER:Elon Musk,LOC:Berlin\"."
+                },
+                {
+                  "disabled": false,
+                  "key": "location-filter",
+                  "value": "<string>",
+                  "description": "Filter news by radius around a location, formatted as \"latitude,longitude,radius-in-km\" where the radius is between 1 and 100 km. Example - news within 15 km of London - \"51.509865,-0.118092,15\". This powers local and geo news search."
+                },
+                {
+                  "disabled": false,
+                  "key": "earliest-publish-date",
+                  "value": "<string>",
+                  "description": "The news must have been published after this date (yyyy-MM-dd HH:mm:ss)."
+                },
+                {
+                  "disabled": false,
+                  "key": "latest-publish-date",
+                  "value": "<string>",
+                  "description": "The news must have been published before this date (yyyy-MM-dd HH:mm:ss)."
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "The sorting criteria (publish-time, sentiment, relevance)."
+                },
+                {
+                  "disabled": false,
+                  "key": "sort-direction",
+                  "value": "<string>",
+                  "description": "Whether to sort ascending (ASC) or descending (DESC)."
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "<integer>",
+                  "description": "The number of news items to skip, for pagination (default 0)."
+                },
+                {
+                  "disabled": false,
+                  "key": "number",
+                  "value": "<integer>",
+                  "description": "The number of news items to return, up to 100 (default 10)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4935c4b3-2b88-4e6b-9186-2ca8abf9ffcf",
+              "name": "A page of matching news articles.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search-news"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "text",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "source-country",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "language",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "categories",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "entities",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "location-filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "earliest-publish-date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "latest-publish-date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort-direction",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "number",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "api-key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"offset\": 1510,\n  \"number\": 4802,\n  \"available\": 5111,\n  \"news\": [\n    {\n      \"id\": 1854,\n      \"title\": \"string\",\n      \"text\": \"string\",\n      \"summary\": \"string\",\n      \"url\": \"string\",\n      \"image\": \"string\",\n      \"publish_date\": \"string\",\n      \"author\": \"string\",\n      \"authors\": [\n        \"string\",\n        \"string\"\n      ],\n      \"language\": \"string\",\n      \"source_country\": \"string\",\n      \"category\": \"string\",\n      \"sentiment\": 2716.543876007432\n    },\n    {\n      \"id\": 7920,\n      \"title\": \"string\",\n      \"text\": \"string\",\n      \"summary\": \"string\",\n      \"url\": \"string\",\n      \"image\": \"string\",\n      \"publish_date\": \"string\",\n      \"author\": \"string\",\n      \"authors\": [\n        \"string\",\n        \"string\"\n      ],\n      \"language\": \"string\",\n      \"source_country\": \"string\",\n      \"category\": \"string\",\n      \"sentiment\": 644.8986588739069\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "81c63372-cc26-4f64-ad12-9b35ea699dcf",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search-news"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "text",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "source-country",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "language",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "categories",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "entities",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "location-filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "earliest-publish-date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "latest-publish-date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort-direction",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "number",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "api-key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "678c8dcd-cb89-433b-b466-03ab0809db33",
+              "name": "Daily point quota exceeded for the current plan.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search-news"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "text",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "source-country",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "language",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "categories",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "entities",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "location-filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "earliest-publish-date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "latest-publish-date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort-direction",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "number",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "api-key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Payment Required",
+              "code": 402,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e601ead5-d846-4c54-962e-0194dc7568d4",
+              "name": "Too many requests - the per-second or concurrency limit was exceeded.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search-news"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "text",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "source-country",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "language",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "categories",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "entities",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "location-filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "earliest-publish-date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "latest-publish-date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort-direction",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "number",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "api-key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.worldnewsapi.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "query"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "c333fee6-9006-4e52-a7c1-1bf5f54ebf78",
+    "name": "World News Extract News Search News API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "World News API provides real-time and historical news from thousands of sources across 210+ countries and 86+ languages. It supports full-text and semantic news search, geo-targeted local news search via a radius filter, article content extraction from arbitrary URLs, country-level top news clustering, newspaper front-page images, and news-source discovery. All requests are authenticated with an API key passed either as the `api-key` query parameter or the `x-api-key` HTTP header. Each endpoint consumes a number of points (credits) that count against your plan's daily allowance.\n\nContact Support:\n Name: World News API",
+      "type": "text/plain"
+    }
+  }
+}

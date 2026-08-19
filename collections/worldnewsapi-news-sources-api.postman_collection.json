@@ -1,0 +1,173 @@
+{
+  "item": [
+    {
+      "id": "9ec9bbf0-2d59-434b-9084-1929a00bff6f",
+      "name": "News Sources",
+      "description": {
+        "content": "Discover and inspect available news sources.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "1042f19a-8b6b-4b5a-b0a6-480ba3bd88b5",
+          "name": "Search news sources",
+          "request": {
+            "name": "Search news sources",
+            "description": {
+              "content": "Find and inspect the news sources available in the World News API.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "search-news-sources"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "(Required) The (partial) name of the news source to search for."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "581e3c45-d60a-408b-be77-4af26d4a6088",
+              "name": "Matching news sources.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search-news-sources"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "api-key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "15d7acb9-a141-4bbd-bc48-5ca21a7810c2",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search-news-sources"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "api-key",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.worldnewsapi.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "query"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "1a7e078c-5433-4485-bd4a-052a1275cd0f",
+    "name": "World News Extract News News Sources API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "World News API provides real-time and historical news from thousands of sources across 210+ countries and 86+ languages. It supports full-text and semantic news search, geo-targeted local news search via a radius filter, article content extraction from arbitrary URLs, country-level top news clustering, newspaper front-page images, and news-source discovery. All requests are authenticated with an API key passed either as the `api-key` query parameter or the `x-api-key` HTTP header. Each endpoint consumes a number of points (credits) that count against your plan's daily allowance.\n\nContact Support:\n Name: World News API",
+      "type": "text/plain"
+    }
+  }
+}

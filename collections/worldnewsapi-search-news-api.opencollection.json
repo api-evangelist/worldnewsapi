@@ -1,0 +1,111 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "World News Extract News Search News API",
+    "version": "1.2"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "api-key",
+      "value": "{{api-key}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Search News",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search news",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.worldnewsapi.com/search-news",
+            "params": [
+              {
+                "name": "text",
+                "value": "",
+                "type": "query",
+                "description": "The keyword(s) to search for in the news article text."
+              },
+              {
+                "name": "source-country",
+                "value": "",
+                "type": "query",
+                "description": "The ISO 3166 country code of the news source (e.g. \"us\", \"gb\")."
+              },
+              {
+                "name": "language",
+                "value": "",
+                "type": "query",
+                "description": "The ISO 6391 language code of the news (e.g. \"en\")."
+              },
+              {
+                "name": "categories",
+                "value": "",
+                "type": "query",
+                "description": "A comma-separated list of categories to filter by (e.g. politics, sports, business, technology, entertainment, health, science, lifestyle, travel, culture, education, environment, other)."
+              },
+              {
+                "name": "entities",
+                "value": "",
+                "type": "query",
+                "description": "Semantic filter for specific people, organizations, or locations, e.g. \"ORG:Tesla,PER:Elon Musk,LOC:Berlin\"."
+              },
+              {
+                "name": "location-filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter news by radius around a location, formatted as \"latitude,longitude,radius-in-km\" where the radius is between 1 and 100 km. Example - news within 15 km of London - \"51.509865,-0.118092,15\". This powers local and geo news search."
+              },
+              {
+                "name": "earliest-publish-date",
+                "value": "",
+                "type": "query",
+                "description": "The news must have been published after this date (yyyy-MM-dd HH:mm:ss)."
+              },
+              {
+                "name": "latest-publish-date",
+                "value": "",
+                "type": "query",
+                "description": "The news must have been published before this date (yyyy-MM-dd HH:mm:ss)."
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "The sorting criteria (publish-time, sentiment, relevance)."
+              },
+              {
+                "name": "sort-direction",
+                "value": "",
+                "type": "query",
+                "description": "Whether to sort ascending (ASC) or descending (DESC)."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The number of news items to skip, for pagination (default 0)."
+              },
+              {
+                "name": "number",
+                "value": "",
+                "type": "query",
+                "description": "The number of news items to return, up to 100 (default 10)."
+              }
+            ]
+          },
+          "docs": "Search and filter news by keyword, semantic entities, category, language, source country, publish-date range, and geographic location. The `location-filter` parameter enables local news search by drawing a radius (1-100 km) around a latitude/longitude point, so consumers can find news mentioning or published near a specific place."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,63 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "World News Extract News Top News API",
+    "version": "1.2"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "api-key",
+      "value": "{{api-key}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Top News",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get top news",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.worldnewsapi.com/top-news",
+            "params": [
+              {
+                "name": "source-country",
+                "value": "",
+                "type": "query",
+                "description": "The ISO 3166 country code for which to get top news (e.g. \"us\")."
+              },
+              {
+                "name": "language",
+                "value": "",
+                "type": "query",
+                "description": "The ISO 6391 language code of the top news (e.g. \"en\")."
+              },
+              {
+                "name": "date",
+                "value": "",
+                "type": "query",
+                "description": "The date for which to get top news (yyyy-MM-dd); defaults to today."
+              },
+              {
+                "name": "headlines-only",
+                "value": "",
+                "type": "query",
+                "description": "Whether to return only the headlines (true) or full article data (false)."
+              }
+            ]
+          },
+          "docs": "Retrieve the top news for a country and language on a given day, clustered so that stories covered by more outlets rank higher."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

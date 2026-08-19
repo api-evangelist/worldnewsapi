@@ -1,0 +1,51 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "World News Extract News Geo Coordinates API",
+    "version": "1.2"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "api-key",
+      "value": "{{api-key}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Geo Coordinates",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get geo coordinates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.worldnewsapi.com/geo-coordinates",
+            "params": [
+              {
+                "name": "location",
+                "value": "",
+                "type": "query",
+                "description": "The location name to resolve, e.g. \"Tokyo, Japan\"."
+              },
+              {
+                "name": "language",
+                "value": "",
+                "type": "query",
+                "description": "The language of the location name (ISO 6391 code)."
+              }
+            ]
+          },
+          "docs": "Resolve a free-form location name to its latitude, longitude, and canonical city name. The returned coordinates are used with the Search News `location-filter` parameter to perform local news search."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

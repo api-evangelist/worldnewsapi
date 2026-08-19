@@ -1,0 +1,57 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "World News Extract News Front Pages API",
+    "version": "1.2"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "api-key",
+      "value": "{{api-key}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Front Pages",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve newspaper front page",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.worldnewsapi.com/retrieve-front-page",
+            "params": [
+              {
+                "name": "source-country",
+                "value": "",
+                "type": "query",
+                "description": "The ISO 3166 country code of the newspaper (e.g. \"us\")."
+              },
+              {
+                "name": "source-name",
+                "value": "",
+                "type": "query",
+                "description": "The identifier of the newspaper (e.g. \"the_new_york_times\")."
+              },
+              {
+                "name": "date",
+                "value": "",
+                "type": "query",
+                "description": "The date of the front page (yyyy-MM-dd)."
+              }
+            ]
+          },
+          "docs": "Retrieve a newspaper's front-page image for a country and date."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

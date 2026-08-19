@@ -1,18 +1,17 @@
-generated: '2026-07-11'
+generated: '2026-08-13'
 method: probed
 source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
 hosts:
 - host: worldnewsapi.com
   https: true
   tls_version: TLSv1.3
-  server: cloudflare
+  cert_expires: Oct 17 19:04:26 2026 GMT
   hsts: false
 - host: api.worldnewsapi.com
   https: true
   tls_version: TLSv1.3
   cert_expires: Sep 22 10:18:54 2026 GMT
-  server: cloudflare
-  hsts: false
+  hsts: null
 domains:
 - domain: worldnewsapi.com
   dnssec: false

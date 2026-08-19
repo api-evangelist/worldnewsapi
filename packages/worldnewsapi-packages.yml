@@ -1,0 +1,146 @@
+generated: '2026-08-13'
+method: searched
+source: https://worldnewsapi.com/sdks/
+docs: https://worldnewsapi.com/sdks/
+description: >-
+  World News API publishes first-party client libraries generated with
+  OpenAPI Generator from its own OpenAPI 3 document
+  (https://raw.githubusercontent.com/ddsky/world-news-api-clients/main/world-news-api-openapi-3.json).
+  Only the JavaScript and Python clients are published to a package registry
+  (npm and PyPI); every other language is distributed as a source directory in
+  the ddsky/world-news-api-clients GitHub repository and as a downloadable zip
+  from https://worldnewsapi.com/downloads/sdks/<key>-client.zip, with no
+  registry metadata endpoint and therefore no published version or date.
+  The MCP server is a separate first-party npm package.
+packages:
+- language: javascript
+  registry: npm
+  name: worldnewsapi
+  url: https://www.npmjs.com/package/worldnewsapi
+  install: npm install worldnewsapi
+  official: true
+  version: 2.2.0
+  published: '2025-03-19'
+  license: Unlicense
+  source: https://github.com/ddsky/world-news-api-clients/tree/main/javascript
+  note: >-
+    Read from registry.npmjs.org on 2026-08-13. Version tracks the OpenAPI
+    document version (2.2.0), so the SDK and the published contract are in
+    step. Latest release is 2025-03-19 - the same day the OpenAPI was last
+    versioned - so the client predates the 2025-08 MCP/Top News changes in the
+    provider changelog.
+- language: python
+  registry: pypi
+  name: worldnewsapi
+  url: https://pypi.org/project/worldnewsapi/
+  install: pip install worldnewsapi
+  official: true
+  version: 2.2.0
+  published: '2025-03-19'
+  source: https://github.com/ddsky/world-news-api-clients/tree/main/python
+  author: David Urbansky <mail@worldnewsapi.com>
+  note: Read from pypi.org/pypi/worldnewsapi/json on 2026-08-13.
+- language: javascript
+  registry: npm
+  name: world-news-api-mcp
+  url: https://www.npmjs.com/package/world-news-api-mcp
+  install: npm install -g world-news-api-mcp
+  official: true
+  kind: mcp-server
+  version: 1.0.0
+  published: '2025-08-04'
+  license: ISC
+  source: https://github.com/ddsky/world-news-api-mcp
+  note: >-
+    First-party MCP (Model Context Protocol) stdio server for the World News
+    API. Read from registry.npmjs.org on 2026-08-13; only one version has ever
+    been published. See mcp/worldnewsapi-mcp.yml.
+- language: java
+  registry: github
+  name: ddsky/world-news-api-clients (java)
+  url: https://github.com/ddsky/world-news-api-clients/tree/main/java
+  official: true
+  version: null
+  published: null
+  note: >-
+    Distributed as source in the clients repo and as a zip from
+    https://worldnewsapi.com/downloads/sdks/java-client.zip. Not published to
+    Maven Central under a discoverable coordinate; no registry metadata
+    endpoint exists to read a version or date from - checked 2026-08-13.
+- language: php
+  registry: github
+  name: ddsky/world-news-api-clients (php)
+  url: https://github.com/ddsky/world-news-api-clients/tree/main/php
+  official: true
+  version: null
+  published: null
+  note: >-
+    Source-only distribution. Not present on Packagist (repo.packagist.org
+    returned 404 for ddsky/worldnewsapi on 2026-08-13), so there is no version
+    or release date to record.
+- language: ruby
+  registry: github
+  name: ddsky/world-news-api-clients (ruby)
+  url: https://github.com/ddsky/world-news-api-clients/tree/main/ruby
+  official: true
+  version: null
+  published: null
+  note: >-
+    Source-only distribution. Not on RubyGems (rubygems.org API returned "this
+    rubygem could not be found" on 2026-08-13).
+- language: rust
+  registry: github
+  name: ddsky/world-news-api-clients (rust)
+  url: https://github.com/ddsky/world-news-api-clients/tree/main/rust
+  official: true
+  version: null
+  published: null
+  note: >-
+    Source-only distribution. Not on crates.io (crate does not exist, checked
+    2026-08-13).
+- language: go
+  registry: github
+  name: ddsky/world-news-api-clients (go)
+  url: https://github.com/ddsky/world-news-api-clients/tree/main/go
+  official: true
+  version: null
+  published: null
+  note: >-
+    Source-only distribution. proxy.golang.org returned no version list for
+    github.com/ddsky/world-news-api-clients on 2026-08-13 (the module lives in
+    a subdirectory of a multi-language repo and is not tagged).
+- language: csharp
+  registry: github
+  name: ddsky/world-news-api-clients (csharp)
+  url: https://github.com/ddsky/world-news-api-clients/tree/main/csharp
+  official: true
+  version: null
+  published: null
+  note: Source-only distribution; no NuGet package found on 2026-08-13.
+other_languages:
+  note: >-
+    The clients repository also carries generated, source-only, unversioned
+    clients for these languages, each downloadable as a zip from
+    https://worldnewsapi.com/downloads/sdks/<key>-client.zip. None is published
+    to a registry, so none carries a version or a release date.
+  languages:
+  - android
+  - angular
+  - clojure
+  - cpp
+  - dart
+  - elixir
+  - elm
+  - erlang
+  - haskell
+  - kotlin
+  - lua
+  - perl
+  - typescript
+sources:
+- https://worldnewsapi.com/sdks/
+- https://github.com/ddsky/world-news-api-clients
+- https://github.com/ddsky/world-news-api-mcp
+- https://registry.npmjs.org/worldnewsapi
+- https://pypi.org/pypi/worldnewsapi/json
+- https://registry.npmjs.org/world-news-api-mcp

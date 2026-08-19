@@ -1,0 +1,58 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for World News Extract News Geo Coordinates API
+  version: 1.0.0
+extends: openapi/worldnewsapi-geo-coordinates-api-openapi.yml
+x-provenance:
+  generated: '2026-08-13'
+  method: generated
+  source: >-
+    Enhancements derived from artifacts already in this repository - the
+    provider-published OpenAPI at
+    openapi/_original/worldnewsapi-openapi-original.json, the live MCP tools/list
+    at mcp/worldnewsapi-mcp-tools.json, conventions/worldnewsapi-conventions.yml
+    and errors/worldnewsapi-problem-types.yml. The overlay never mutates the
+    underlying document.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: worldnewsapi
+    x-apievangelist-provider-openapi: >-
+      https://raw.githubusercontent.com/ddsky/world-news-api-clients/main/world-news-api-openapi-3.json
+    x-apievangelist-contract-version: '2.2.0'
+    x-apievangelist-artifacts:
+      conventions: conventions/worldnewsapi-conventions.yml
+      errors: errors/worldnewsapi-problem-types.yml
+      data-model: data-model/worldnewsapi-data-model.yml
+      lifecycle: lifecycle/worldnewsapi-lifecycle.yml
+      rate-limits: rate-limits/worldnewsapi-rate-limits.yml
+      plans: plans/worldnewsapi-plans-pricing.yml
+      mcp: mcp/worldnewsapi-mcp.yml
+      crosswalk: mcp/worldnewsapi-tool-crosswalk.yml
+      skills: skills/_index.yml
+- target: $.info
+  update:
+    x-apievangelist-metering:
+      unit: point
+      baseline: 1 point per request plus 0.01 points per result returned
+      quota_headers: [X-API-Quota-Request, X-API-Quota-Used, X-API-Quota-Left]
+      exhaustion_status: 402
+      throttle_status: 429
+      retry_after: false
+      docs: https://worldnewsapi.com/docs/quotas-and-rate-limiting/
+- target: $.info
+  update:
+    x-apievangelist-idempotency:
+      supported: false
+      reason: every published operation is a GET; the API exposes no write surface
+- target: $.info
+  update:
+    x-apievangelist-agent-surface:
+      mcp_deployment: local-stdio
+      mcp_package: world-news-api-mcp
+      mcp_remote_endpoint: null
+      agent_card: null
+- target: $.paths['/geo-coordinates'].get
+  update:
+    x-apievangelist-operation-id: getGeoCoordinates
+    x-apievangelist-errors: [401, 402, 403, 404, 406, 429]

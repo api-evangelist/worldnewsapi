@@ -1,0 +1,45 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "World News Extract News News Sources API",
+    "version": "1.2"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "api-key",
+      "value": "{{api-key}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "News Sources",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search news sources",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.worldnewsapi.com/search-news-sources",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "The (partial) name of the news source to search for."
+              }
+            ]
+          },
+          "docs": "Find and inspect the news sources available in the World News API."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,144 @@
+generated: '2026-08-13'
+method: searched
+source: https://worldnewsapi.com/docs/quotas-and-rate-limiting/
+description: >-
+  Cross-cutting request and response semantics for the World News API, read from
+  the provider's own documentation and its published OpenAPI 3 document. The API
+  is entirely read-only - all nine operations are GET - which is why several
+  conventions that matter for write APIs (idempotency, request bodies, conflict
+  handling) have no contract here at all.
+authentication:
+  style: api-key
+  locations:
+  - kind: query
+    parameter: api-key
+  - kind: header
+    parameter: x-api-key
+  recommended: header
+  recommendation_source: https://worldnewsapi.com/docs/authentication/
+  recommendation_note: >-
+    The provider recommends the x-api-key header for production "as it keeps
+    your key out of server logs and browser history".
+  oauth: false
+  scopes: false
+  artifact: authentication/worldnewsapi-authentication.yml
+idempotency:
+  supported: false
+  header: null
+  note: >-
+    No idempotency contract exists and none is needed as published: every
+    operation in the specification is a GET and therefore idempotent by HTTP
+    method. There is no Idempotency-Key header, no idempotent-replay window, and
+    no write endpoint in the public OpenAPI. The Suggest News Source feature
+    described in the docs is the only write-shaped capability and it is not in
+    the published contract. No Idempotency pointer is emitted for this provider.
+pagination:
+  style: offset-limit
+  request:
+    offset: offset
+    limit: number
+  defaults:
+    number: 10
+  bounds:
+    number: [1, 100]
+    offset: [0, 100000]
+  response_fields:
+    offset: offset
+    returned: number
+    total: available
+  cursor: false
+  link_header: false
+  applies_to: [searchNews]
+  note: >-
+    Only search-news paginates. top-news, retrieve-front-page and the extraction
+    endpoints return a single bounded document with no paging controls.
+filtering:
+  free_text: text
+  text_scope: text-match-indexes
+  facets: [source-country, language, categories, authors, news-sources, entities]
+  ranges: [min-sentiment, max-sentiment, earliest-publish-date, latest-publish-date]
+  geospatial:
+    parameter: location-filter
+    format: latitude,longitude,radius_km
+    radius_units: km
+    companion_operation: getGeoCoordinates
+  semantic:
+    parameter: entities
+    format: TYPE:Value, comma separated (e.g. ORG:Tesla,PER:Elon Musk)
+    docs: https://worldnewsapi.com/docs/semantic-types/
+sorting:
+  parameter: sort
+  values: [publish-time]
+  direction_parameter: sort-direction
+  direction_values: [ASC, DESC]
+field_expansion:
+  supported: partial
+  note: >-
+    headlines-only on top-news trims the response to id, title and url; analyze
+    on the two extraction endpoints adds entities and sentiment. There is no
+    general sparse-fieldset or expand parameter.
+metadata:
+  supported: false
+  note: No customer-defined metadata may be attached to any resource; the API is read-only.
+request_tracing:
+  request_id_header: null
+  note: No request-id or correlation-id header is documented.
+versioning:
+  scheme: none-in-path
+  note: >-
+    The base URL https://api.worldnewsapi.com carries no version segment and no
+    version header is documented. The only version signal is info.version in the
+    published OpenAPI document (2.2.0 as of 2026-08-13), which the JavaScript
+    and Python SDKs track. Changes are announced on the changelog page.
+  contract_version: 2.2.0
+  changelog: https://worldnewsapi.com/docs/api-changelog/
+  artifact: lifecycle/worldnewsapi-lifecycle.yml
+error_envelope:
+  documented: false
+  media_type: null
+  statuses: [401, 402, 403, 404, 406, 429]
+  note: >-
+    No error body schema is declared for any status on any operation - the
+    status code is the whole error contract.
+  artifact: errors/worldnewsapi-problem-types.yml
+rate_limit_signaling:
+  quota_headers:
+  - name: X-API-Quota-Request
+    meaning: Points consumed by this request.
+  - name: X-API-Quota-Used
+    meaning: Points consumed today in total; resets at midnight UTC.
+  - name: X-API-Quota-Left
+    meaning: Points remaining today under the current plan.
+  standard_headers: []
+  retry_after: false
+  exhaustion_status: 402
+  throttle_status: 429
+  note: >-
+    World News API signals cost and remaining budget on every successful
+    response through its own X-API-Quota-* headers rather than the RateLimit-*
+    or X-RateLimit-* families, and distinguishes quota exhaustion (402) from
+    rate throttling (429). No Retry-After is returned.
+  artifact: rate-limits/worldnewsapi-rate-limits.yml
+metering:
+  unit: point
+  aliases: [credit, token]
+  baseline: 1 point per request plus 0.01 points per result returned
+  note: >-
+    Per-endpoint point cost varies with the endpoint and the parameters used and
+    is stated at the bottom of each endpoint's documentation page.
+  docs: https://worldnewsapi.com/docs/quotas-and-rate-limiting/
+content_types:
+  responses: [application/json]
+  exception:
+    operation: newsWebsiteToRSSFeed
+    media_type: application/xml
+    note: /feed.rss returns RSS 2.0 XML, not JSON.
+conventions_notes:
+- All parameter names are lower-case and hyphenated (source-country, location-filter, headlines-only) in both the REST contract and the MCP tool schemas.
+- All dates are supplied and returned as strings; publish dates use YYYY-MM-DD HH:MM:SS and calendar dates use YYYY-MM-DD.
+- Country codes are ISO 3166 alpha-2 and language codes are ISO 639-1, both lower case.
+sources:
+- https://worldnewsapi.com/docs/quotas-and-rate-limiting/
+- https://worldnewsapi.com/docs/authentication/
+- https://worldnewsapi.com/docs/semantic-types/
+- https://raw.githubusercontent.com/ddsky/world-news-api-clients/main/world-news-api-openapi-3.json

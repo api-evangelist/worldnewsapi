@@ -1,0 +1,256 @@
+{
+ "tools": [
+  {
+   "name": "search_news",
+   "description": "Search and filter news by text, date, location, category, language, and more",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "text": {
+      "type": "string",
+      "description": "The text to match in the news content (at least 3 characters)",
+      "minLength": 3,
+      "maxLength": 100
+     },
+     "source-country": {
+      "type": "string",
+      "description": "ISO 3166 country code (e.g., us, gb, de)",
+      "maxLength": 2
+     },
+     "language": {
+      "type": "string",
+      "description": "ISO 6391 language code (e.g., en, es, fr)",
+      "maxLength": 2
+     },
+     "min-sentiment": {
+      "type": "number",
+      "description": "Minimal sentiment of the news in range [-1,1]",
+      "minimum": -1,
+      "maximum": 1
+     },
+     "max-sentiment": {
+      "type": "number",
+      "description": "Maximal sentiment of the news in range [-1,1]",
+      "minimum": -1,
+      "maximum": 1
+     },
+     "earliest-publish-date": {
+      "type": "string",
+      "description": "The news must have been published after this date (YYYY-MM-DD HH:MM:SS)",
+      "maxLength": 19
+     },
+     "latest-publish-date": {
+      "type": "string",
+      "description": "The news must have been published before this date (YYYY-MM-DD HH:MM:SS)",
+      "maxLength": 19
+     },
+     "news-sources": {
+      "type": "string",
+      "description": "Comma-separated list of news sources (e.g., https://www.bbc.co.uk)",
+      "maxLength": 10000
+     },
+     "authors": {
+      "type": "string",
+      "description": "Comma-separated list of author names",
+      "maxLength": 300
+     },
+     "categories": {
+      "type": "string",
+      "description": "Comma-separated list of categories (politics, sports, business, technology, etc.)",
+      "maxLength": 300
+     },
+     "entities": {
+      "type": "string",
+      "description": "Filter by entities (e.g., ORG:Tesla,PER:Elon Musk)",
+      "maxLength": 10000
+     },
+     "location-filter": {
+      "type": "string",
+      "description": "Filter by radius around location: \"latitude,longitude,radius_km\"",
+      "maxLength": 100
+     },
+     "sort": {
+      "type": "string",
+      "description": "Sorting criteria (publish-time)",
+      "maxLength": 100
+     },
+     "sort-direction": {
+      "type": "string",
+      "description": "Whether to sort ascending or descending (ASC or DESC)",
+      "enum": [
+       "ASC",
+       "DESC"
+      ]
+     },
+     "offset": {
+      "type": "number",
+      "description": "Number of news to skip",
+      "minimum": 0,
+      "maximum": 10000
+     },
+     "number": {
+      "type": "number",
+      "description": "Number of news to return",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 10
+     }
+    },
+    "required": []
+   }
+  },
+  {
+   "name": "get_top_news",
+   "description": "Get the top news from a country in a language for a specific date",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "source-country": {
+      "type": "string",
+      "description": "ISO 3166 country code (e.g., us, gb, de)",
+      "maxLength": 2
+     },
+     "language": {
+      "type": "string",
+      "description": "ISO 6391 language code (e.g., en, es, fr)",
+      "maxLength": 2
+     },
+     "date": {
+      "type": "string",
+      "description": "Date for top news (YYYY-MM-DD). If not provided, current day is used",
+      "maxLength": 10
+     },
+     "headlines-only": {
+      "type": "boolean",
+      "description": "Return only basic information (id, title, url)",
+      "default": false
+     }
+    },
+    "required": [
+     "source-country",
+     "language"
+    ]
+   }
+  },
+  {
+   "name": "retrieve_newspaper_front_page",
+   "description": "Get the front pages of newspapers from around the world",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "source-country": {
+      "type": "string",
+      "description": "ISO 3166 country code of the newspaper publication",
+      "maxLength": 2
+     },
+     "source-name": {
+      "type": "string",
+      "description": "Identifier of the publication (e.g., herald-sun)",
+      "maxLength": 100
+     },
+     "date": {
+      "type": "string",
+      "description": "Date for front page (YYYY-MM-DD). Earliest date is 2024-07-09",
+      "maxLength": 10
+     }
+    },
+    "required": []
+   }
+  },
+  {
+   "name": "retrieve_news_articles",
+   "description": "Retrieve information about one or more news articles by their IDs",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "ids": {
+      "type": "string",
+      "description": "Comma-separated list of news IDs (e.g., \"2352,2354\")",
+      "maxLength": 10000
+     }
+    },
+    "required": [
+     "ids"
+    ]
+   }
+  },
+  {
+   "name": "extract_news",
+   "description": "Extract a news article from a website to a well-structured JSON object",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "url": {
+      "type": "string",
+      "description": "URL of the news article to extract",
+      "maxLength": 1000
+     },
+     "analyze": {
+      "type": "boolean",
+      "description": "Whether to analyze the extracted news (entities, sentiment, etc.)",
+      "default": false
+     }
+    },
+    "required": [
+     "url"
+    ]
+   }
+  },
+  {
+   "name": "extract_news_links",
+   "description": "Extract news links from a news website",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "url": {
+      "type": "string",
+      "description": "URL of the news website to extract links from",
+      "maxLength": 1000
+     },
+     "analyze": {
+      "type": "boolean",
+      "description": "Whether to analyze the extracted news",
+      "default": false
+     }
+    },
+    "required": [
+     "url"
+    ]
+   }
+  },
+  {
+   "name": "search_news_sources",
+   "description": "Search whether a news source is being monitored by the World News API",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "description": "The (partial) name of the source (e.g., \"bbc\")",
+      "maxLength": 1000
+     }
+    },
+    "required": [
+     "name"
+    ]
+   }
+  },
+  {
+   "name": "get_geo_coordinates",
+   "description": "Retrieve the latitude and longitude of a location name for use in location-filter",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "location": {
+      "type": "string",
+      "description": "The address or name of the location (e.g., \"Tokyo, Japan\")",
+      "maxLength": 1000
+     }
+    },
+    "required": [
+     "location"
+    ]
+   }
+  }
+ ]
+}

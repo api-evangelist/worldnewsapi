@@ -1,0 +1,81 @@
+generated: '2026-08-13'
+method: searched
+source: https://worldnewsapi.com/docs/api-changelog/
+description: >-
+  Lifecycle posture for the World News API. The provider runs an unversioned
+  base URL, announces changes on a dated changelog page, publishes a public
+  status page, and states per-plan uptime targets on its pricing page. It does
+  not publish a standalone deprecation policy document; the deprecation
+  commitments recorded here are the specific, dated notices published inside the
+  changelog itself.
+versioning:
+  scheme: none
+  in_path: false
+  header: null
+  current: '2.2.0'
+  current_source: openapi info.version
+  docs: https://worldnewsapi.com/docs/api-changelog/
+  note: >-
+    https://api.worldnewsapi.com carries no version segment. The only version
+    identifier the provider publishes is info.version in its OpenAPI document,
+    which the SDKs track.
+deprecation:
+  policy_url: https://worldnewsapi.com/docs/api-changelog/
+  policy_document: false
+  sunset_header: false
+  deprecation_header: false
+  practice: >-
+    Deprecations are announced as prose notices inside dated changelog entries.
+    One notice carried an explicit removal date; one did not. No RFC 8594 Sunset
+    or Deprecation response header is documented, and no operation or parameter
+    in the published OpenAPI carries deprecated: true.
+  notices:
+  - announced: '2024-06-07'
+    scope: extraction endpoint response fields
+    fields: [author, image, video]
+    replacements: [authors, images, videos]
+    removal_date: '2024-12-31'
+    status: past-removal-date
+  - announced: '2024-10-21'
+    scope: news search request parameter
+    fields: [source-countries]
+    replacements: [source-country]
+    removal_date: null
+    status: deprecated-no-date
+deprecated_operations: []
+deprecated_operations_note: >-
+  No operation in openapi/_original/worldnewsapi-openapi-original.json is marked
+  deprecated. The published contract carries no deprecation metadata at all, so
+  the two notices above are discoverable only by reading the changelog page.
+status_page:
+  url: https://status.worldnewsapi.com/
+  http_status: 200
+  linked_from: [https://worldnewsapi.com/docs/, https://worldnewsapi.com/pricing/]
+sla:
+  published: true
+  url: https://worldnewsapi.com/pricing/
+  per_plan_uptime_target:
+    Free: none
+    Reporter: '99%'
+    Journalist: '99.9%'
+    Editor: '99.99%'
+  note: >-
+    Uptime targets are advertised as plan features on the pricing page. The
+    pricing FAQ separately states "We guarantee 99.9% uptime for all plans",
+    which contradicts the per-plan tier table on the same page; both readings
+    are recorded here rather than resolved.
+  credits_documented: false
+support:
+  free: https://discord.gg/GrmNknKHYD
+  paid: email
+  enterprise: scheduled phone
+  note: Support channel is a plan feature - Discord on Free, email on Journalist, phone on Editor.
+history_limits:
+  free: 1 month
+  paid: back to 2022-01-01
+  source: https://worldnewsapi.com/pricing/
+changelog: changelog/worldnewsapi-changelog.yml
+sources:
+- https://worldnewsapi.com/docs/api-changelog/
+- https://worldnewsapi.com/pricing/
+- https://status.worldnewsapi.com/

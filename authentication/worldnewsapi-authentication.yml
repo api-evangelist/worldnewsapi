@@ -1,26 +1,82 @@
-generated: '2026-07-11'
-method: derived
-source: openapi/worldnewsapi-openapi.yml
+generated: '2026-08-13'
+method: searched
+source: https://worldnewsapi.com/docs/authentication/
+docs: https://worldnewsapi.com/docs/authentication/
+description: >-
+  World News API uses a single static API key and nothing else. The provider
+  states plainly in its authentication guide that "no OAuth or token refresh is
+  required". The same key authenticates the REST API, the SDKs and the
+  first-party MCP server; there are no scopes, no per-key permissions, no
+  expiry, and no documented rotation policy. Upgraded from derived to searched
+  on 2026-08-13 against the provider's own authentication page and its published
+  OpenAPI 3 document.
 summary:
   types:
   - apiKey
+  api_key_in:
+  - query
+  - header
+  oauth2_flows: []
+  scopes: false
+  mtls: false
+  openid_connect: false
+  recommended: header
 schemes:
-- name: apiKeyQuery
+- name: apiKey
+  spec_name: apiKey
   type: apiKey
   in: query
   parameterName: api-key
   description: >-
     API key passed as the "api-key" query parameter, e.g.
-    https://api.worldnewsapi.com/search-news?text=news&api-key=YOUR_API_KEY.
-    Obtain a key by signing up for a free account in the API console.
+    https://api.worldnewsapi.com/search-news?text=tesla&api-key=YOUR-API-KEY.
+    Only the first query parameter is prefixed with "?"; subsequent ones use
+    "&". Obtain a key by signing up for a free account in the API console.
   sources:
-  - openapi/worldnewsapi-openapi.yml
-- name: apiKeyHeader
+  - openapi/_original/worldnewsapi-openapi-original.json
+  - https://worldnewsapi.com/docs/authentication/
+- name: headerApiKey
+  spec_name: headerApiKey
   type: apiKey
   in: header
   parameterName: x-api-key
   description: >-
     The same API key may instead be passed as the "x-api-key" HTTP request
-    header.
+    header. The provider recommends this form for production applications
+    because it keeps the key out of server logs and browser history.
+  recommended: true
   sources:
-  - openapi/worldnewsapi-openapi.yml
+  - openapi/_original/worldnewsapi-openapi-original.json
+  - https://worldnewsapi.com/docs/authentication/
+application:
+  global: true
+  note: >-
+    The published OpenAPI applies security globally as [{apiKey: []},
+    {headerApiKey: []}] - either scheme satisfies any operation. No operation
+    overrides it, and no operation is unauthenticated.
+key_management:
+  obtain: https://worldnewsapi.com/console/
+  free_tier: true
+  credit_card_required: false
+  rotation_policy: undocumented
+  expiry: none documented
+  multiple_keys: undocumented
+  revocation: undocumented
+mcp:
+  mechanism: environment-variable
+  variable: WORLD_NEWS_API_KEY
+  note: >-
+    The first-party MCP server (world-news-api-mcp) takes the same key through
+    an environment variable rather than a per-request header. See
+    mcp/worldnewsapi-mcp.yml.
+failure_modes:
+  401: API key missing or invalid.
+  402: Key is valid but the daily point allowance is exhausted.
+  403: Key is valid but the plan does not include the requested feature.
+gaps:
+- No key rotation, expiry, or revocation procedure is documented.
+- No scopes or least-privilege model - one key grants the entire surface.
+- The query-parameter form is offered first in the docs and in the specification's security list, despite the provider recommending the header form.
+sources:
+- https://worldnewsapi.com/docs/authentication/
+- https://raw.githubusercontent.com/ddsky/world-news-api-clients/main/world-news-api-openapi-3.json

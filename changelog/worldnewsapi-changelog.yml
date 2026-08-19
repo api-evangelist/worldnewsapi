@@ -1,0 +1,92 @@
+generated: '2026-08-13'
+method: searched
+source: https://worldnewsapi.com/docs/api-changelog/
+url: https://worldnewsapi.com/docs/api-changelog/
+description: >-
+  World News API keeps a dated, human-readable changelog page inside its
+  documentation. Entries are dated but not versioned - the page carries no
+  release numbers and no RSS or JSON feed - so the only machine-readable version
+  signal is info.version in the published OpenAPI document. Entries below are
+  the recent window captured verbatim from the page on 2026-08-13; the page
+  itself remains the source of truth.
+scheme:
+  versioned_entries: false
+  dated_entries: true
+  feed: null
+  format: html
+current_version:
+  source: openapi info.version
+  value: 2.2.0
+  file: openapi/_original/worldnewsapi-openapi-original.json
+entries:
+- date: '2025-08-19'
+  version: null
+  breaking: false
+  highlights:
+  - Launched the World News API MCP Server, making the API callable from MCP-compatible AI clients.
+  - Added a max-news-per-cluster parameter to the Top News endpoint to cap the size of clustered responses.
+  - Fixed a bug in quoted searches.
+  - Added 1,000+ newspaper front pages.
+  additions: [max-news-per-cluster (top-news), MCP server]
+  deprecations: []
+- date: '2025-03-20'
+  version: '2.2.0'
+  version_note: Date matches the 2.2.0 release of the JavaScript and Python SDKs.
+  breaking: false
+  highlights:
+  - Volume up to 190k+ news per day, a 60% increase, with over 1,000 new sources.
+  - Coverage expanded to 210 countries (from 160) and 86 languages (from 40).
+  - New text-match-indexes parameter lets title and content be searched separately.
+  - New Search News Sources endpoint to check whether a source is monitored.
+  - New Suggest News Source endpoint for requesting an unmonitored source (not on the free plan).
+  - Request latency halved after enabling Cloudflare Argo routing.
+  additions: [text-match-indexes (search-news), search-news-sources, suggest-news-source]
+  deprecations: []
+- date: '2024-10-21'
+  version: null
+  breaking: false
+  highlights:
+  - Substantial search performance improvements.
+  - Over 2,000 news sources added; daily new-news volume doubled.
+  additions: []
+  deprecations:
+  - field: source-countries
+    replacement: source-country
+    note: Deprecated on the news search endpoint; the singular form is materially faster.
+- date: '2024-07-20'
+  version: null
+  breaking: false
+  highlights:
+  - New newspaper front pages endpoint covering 6,000+ publications in 125+ countries.
+  - New categories parameter on news search (politics, sports, business, technology, entertainment, health, science, lifestyle, travel, culture, education, environment, other).
+  - 100+ news sources added; daily new-news volume up 80%.
+  additions: ['retrieve-front-page', 'categories (search-news)']
+  deprecations: []
+- date: '2024-06-07'
+  version: null
+  breaking: false
+  highlights:
+  - New Top News endpoint returning breaking news for any country and language.
+  - Python SDK getting-started tutorial rewritten; JavaScript SDK published as an npm package.
+  - News extraction now returns collections of images (with caption and dimensions) and videos (with summary, url, duration).
+  - 500+ news sources added; extraction up to 40x faster.
+  additions: ['top-news', 'images[]', 'videos[]', 'authors[]']
+  deprecations:
+  - field: author
+    replacement: authors
+    removal_date: '2024-12-31'
+  - field: image
+    replacement: images
+    removal_date: '2024-12-31'
+  - field: video
+    replacement: videos
+    removal_date: '2024-12-31'
+    note: >-
+      Announced as a scheduled removal by 31 December 2024 on the extraction
+      endpoint. This is the only dated removal commitment the provider has
+      published.
+observations:
+- The most recent published entry is 2025-08-19, roughly twelve months before this capture; the changelog has not been updated since.
+- No entry is tied to a version number, so a consumer cannot correlate a change with a contract version except through the SDK release dates.
+sources:
+- https://worldnewsapi.com/docs/api-changelog/

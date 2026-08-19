@@ -1,11 +1,16 @@
 specification: API Commons Rate Limits
 specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+generated: '2026-08-13'
+method: searched
+source: https://worldnewsapi.com/docs/quotas-and-rate-limiting/
 provider: World News API
 providerId: worldnewsapi
 created: '2026-07-11'
-modified: '2026-07-11'
-reconciled: false
+modified: '2026-08-13'
+reconciled: true
+reconciledOn: '2026-08-13'
+limit_count: 6
 tags:
 - News
 - News Search
@@ -22,17 +27,53 @@ description: >-
   request; Reporter 2/sec and 5 concurrent; Journalist 10/sec and 10 concurrent;
   Editor 20/sec and 20 concurrent.
 notes: >-
-  Values captured from the public pricing page on 2026-07-11 and not
-  independently reconciled - verify at https://worldnewsapi.com/pricing/.
-  Per-endpoint point costs vary by endpoint and parameters. Remaining quota and
-  rate-limit state are typically returned in X-API-Quota-* response headers.
+  Re-read from the provider's own rate-limiting documentation and pricing page
+  on 2026-08-13. Baseline cost is 1 point per request plus 0.01 points per
+  result returned, with per-endpoint exceptions stated at the bottom of each
+  endpoint's documentation page. Quota resets at midnight UTC. The provider
+  publishes its budget signal on proprietary X-API-Quota-* response headers
+  rather than the IETF RateLimit-* fields, and sends no Retry-After on 429.
 sources:
+- https://worldnewsapi.com/docs/quotas-and-rate-limiting/
 - https://worldnewsapi.com/pricing/
 - https://worldnewsapi.com/docs/
 responseCodes:
   quotaExceeded: 402
   throttled: 429
   unauthorized: 401
+  planFeatureNotIncluded: 403
+responseHeaders:
+- name: X-API-Quota-Request
+  meaning: Points consumed by this request.
+  returned_on: every successful response
+- name: X-API-Quota-Used
+  meaning: Points consumed today in total; resets to zero at midnight UTC.
+  returned_on: every successful response
+- name: X-API-Quota-Left
+  meaning: Points remaining today under the current plan.
+  returned_on: every successful response
+- name: Retry-After
+  meaning: Not returned. The provider documents no Retry-After on 429; use exponential backoff.
+  returned_on: never
+standardHeaders:
+  ratelimit_draft: false
+  x_ratelimit: false
+  note: >-
+    Neither the RateLimit-* (IETF draft) nor the X-RateLimit-* families are
+    used. An agent must read the X-API-Quota-* headers to know its budget.
+discrepancies:
+- field: Free plan request rate
+  pricing_page: 1 request per second
+  rate_limit_docs: 60 requests in 1 minute
+  note: >-
+    The two provider pages disagree on the shape of the Free limit (a per-second
+    cap versus a per-minute budget). Both readings are recorded rather than
+    resolved; the per-minute form permits short bursts the per-second form does
+    not.
+- field: Editor plan concurrency
+  pricing_page: 20 concurrent requests
+  rate_limit_docs: 10 requests simultaneously
+  note: The pricing page and the rate-limiting guide state different concurrency ceilings for the top tier.
 limits:
 - name: Daily Points (Free)
   scope: account
@@ -57,13 +98,18 @@ limits:
 - name: Requests per Second
   scope: account
   metric: requests
+  window: second
   limit: 1 (Free) / 2 (Reporter) / 10 (Journalist) / 20 (Editor)
-  notes: Per-second request cap scales with plan tier.
+  notes: >-
+    Per-second request cap scales with plan tier. The rate-limiting guide states
+    the Free limit as 60 requests in 1 minute instead; see discrepancies above.
 - name: Concurrent Requests
   scope: account
   metric: connections
   limit: 1 (Free) / 5 (Reporter) / 10 (Journalist) / 20 (Editor)
-  notes: Maximum number of in-flight requests at once, scales with plan tier.
+  notes: >-
+    Maximum number of in-flight requests at once, scales with plan tier. The
+    rate-limiting guide states 10 rather than 20 for Editor.
 policies:
 - name: Point Metering
   description: Each endpoint call consumes a plan-independent number of points based on the endpoint and parameters; points are the primary quota.
