@@ -17,6 +17,19 @@ description: >-
   budget on every response. The provider publishes its own OpenAPI 3 document,
   generated client libraries for two dozen languages, and a first-party
   local-stdio MCP server exposing eight news tools to AI agents.
+deliveryModel:
+  model: unknown
+  open_source: unknown
+  commercial: true
+  callable_host: true
+  label: Delivery model not determined — needs a product licence on record
+  confidence: low
+  source:
+  - openapi
+  - pricing
+  - repository-unlicensed
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: freemium
   onboarding: self-serve
