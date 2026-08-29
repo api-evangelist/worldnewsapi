@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   title: World News Extract News API
   description: World News API provides real-time and historical news from thousands of sources across 210+ countries and 86+ languages. It supports full-text and semantic news search, geo-targeted local news search via a radius filter, article content extraction from arbitrary URLs, country-level top news clustering, newspaper front-page images, and news-source discovery. All requests are authenticated with an API key passed either as the `api-key` query parameter or the `x-api-key` HTTP header. Each endpoint consumes a number of points (credits) that count against your plan's daily allowance.

@@ -231,6 +231,16 @@ apis:
     url: mcp/worldnewsapi-mcp.yml
   - type: ToolCrosswalk
     url: mcp/worldnewsapi-tool-crosswalk.yml
+- aid: worldnewsapi:worldnewsapi-news-api
+  name: World News API News API
+  description: The News API from World News API — 9 operation(s) for news.
+  humanURL: https://worldnewsapi.com/docs/extract-news/
+  baseURL: https://api.worldnewsapi.com
+  tags:
+  - News
+  properties:
+  - type: OpenAPI
+    url: openapi/worldnewsapi-news-api-openapi.yml
 common:
 - type: OpenAPI
   name: World News API OpenAPI 3.0.0 (provider-published, v2.2.0)

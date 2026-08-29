@@ -1,15 +1,11 @@
 {
   "provider": "worldnewsapi",
   "sources": [
-    "worldnewsapi-extract-news-api-openapi.yml",
-    "worldnewsapi-front-pages-api-openapi.yml",
-    "worldnewsapi-geo-coordinates-api-openapi.yml",
-    "worldnewsapi-news-sources-api-openapi.yml",
-    "worldnewsapi-retrieve-news-api-openapi.yml",
-    "worldnewsapi-search-news-api-openapi.yml",
-    "worldnewsapi-top-news-api-openapi.yml"
+    "_original/worldnewsapi-openapi-original.json",
+    "_original/worldnewsapi-openapi.yml"
   ],
   "outputs": [
+    "worldnewsapi-news-api-openapi.yml",
     "worldnewsapi-extract-news-api-openapi.yml",
     "worldnewsapi-front-pages-api-openapi.yml",
     "worldnewsapi-geo-coordinates-api-openapi.yml",
@@ -21,6 +17,19 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (2 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "worldnewsapi-openapi-original.json: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "worldnewsapi-openapi-original.json: declared missing tag: News",
+    "worldnewsapi-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0"
+  ],
+  "skipped": [
+    "worldnewsapi-extract-news-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "worldnewsapi-front-pages-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "worldnewsapi-geo-coordinates-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "worldnewsapi-news-sources-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "worldnewsapi-retrieve-news-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "worldnewsapi-search-news-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "worldnewsapi-top-news-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
