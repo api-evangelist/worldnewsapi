@@ -242,6 +242,9 @@ apis:
   - type: OpenAPI
     url: openapi/worldnewsapi-news-api-openapi.yml
 common:
+- type: License
+  name: MIT
+  url: https://github.com/ddsky/world-news-api-clients/blob/main/LICENSE
 - type: OpenAPI
   name: World News API OpenAPI 3.0.0 (provider-published, v2.2.0)
   url: openapi/_original/worldnewsapi-openapi-original.json
