@@ -242,6 +242,8 @@ apis:
   - type: OpenAPI
     url: openapi/worldnewsapi-news-api-openapi.yml
 common:
+- type: LlmsText
+  url: https://worldnewsapi.com/llms.txt
 - type: License
   name: MIT
   url: https://github.com/ddsky/world-news-api-clients/blob/main/LICENSE
